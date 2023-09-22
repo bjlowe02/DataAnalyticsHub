@@ -1,5 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rmit.dataanalyticshub.HubController" />
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rmit.dataanalyticshub.HubController">
+   <left>
+      <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="110.0" style="-fx-background-color: rgb(65, 71, 112);">
+         <children>
+            <ImageView fitHeight="71.0" fitWidth="72.0" preserveRatio="true">
+               <image>
+                  <Image url="@pfp.png" />
+               </image></ImageView>
+            <Label fx:id="txtCurrentUser" alignment="TOP_CENTER" prefHeight="30.0" prefWidth="115.0" text="Current User" textFill="#5b85aa">
+               <font>
+                  <Font name="System Bold Italic" size="12.0" />
+               </font></Label>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
+      </VBox>
+   </left>
+</BorderPane>
