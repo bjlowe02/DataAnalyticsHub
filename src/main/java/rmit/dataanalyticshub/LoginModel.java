@@ -4,6 +4,7 @@ import java.sql.*;
 
 public class LoginModel {
     Connection connection;
+
     public LoginModel() {
         connection = SqliteConnection.Connector();
         if (connection == null) System.exit(1);
@@ -30,4 +31,33 @@ public class LoginModel {
             resultSet.close();
         }
     }
+
+    public User getUserFromID(int ID) throws SQLException {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String query = "SELECT * " +
+                "FROM users " +
+                "WHERE ID = ?";
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, String.valueOf(ID));
+
+            resultSet = preparedStatement.executeQuery();
+
+            String firstName = "";
+            String lastName = "";
+
+            while(resultSet.next()) {
+                firstName = resultSet.getString("firstName");
+                lastName = resultSet.getString("lastName");
+            }
+            return new User(ID, firstName, lastName);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            preparedStatement.close();
+            resultSet.close();
+        }
+    }
 }
+

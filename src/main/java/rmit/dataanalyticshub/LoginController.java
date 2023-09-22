@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class LoginController {
@@ -40,16 +41,20 @@ public class LoginController {
         } else { //good input will continue to check against db
             try {
                 if (loginModel.isLogin(txtID.getText(), txtPassword.getText())){
-                    //TODO store user details
-
                     //close current form
                     ((Node)event.getSource()).getScene().getWindow().hide();
                     //open next from with logged-in user
                     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Hub.fxml"));
                     Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+                    //get full user details
+                    User user = loginModel.getUserFromID(Integer.parseInt(txtID.getText()));
+                    //store user details in controller
+                    HubController hubController = (HubController)fxmlLoader.getController();
+                    hubController.setUser(user);
+                    //set stage
                     Stage stage = new Stage();
                     stage.getIcons().add(new Image("file:src/icon.png"));
-                    stage.setTitle("Data Analytics Hub | Login");
+                    stage.setTitle("Data Analytics Hub");
                     stage.setScene(scene);
                     stage.show();
                 } else {
@@ -62,10 +67,8 @@ public class LoginController {
                     txtID.clear();
                     txtPassword.clear();
                 }
-            } catch (SQLException e) {
+            } catch (SQLException | IOException e) {
                 System.out.println(e);
-            } catch (IOException e) {
-                //System.out.println(e);
             }
         }
     }
