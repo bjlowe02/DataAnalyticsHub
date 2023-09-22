@@ -52,8 +52,6 @@ public class LoginController {
                     stage.setTitle("Data Analytics Hub | Login");
                     stage.setScene(scene);
                     stage.show();
-
-
                 } else {
                     //warning message
                     JOptionPane.showMessageDialog(null,
