@@ -10,7 +10,7 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
     }
-    public String getFullName() {
-        return firstName + " " + lastName;
+    public String getFirstName() {
+        return firstName;
     }
 }
