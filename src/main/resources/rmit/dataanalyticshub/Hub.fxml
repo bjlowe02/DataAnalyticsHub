@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -16,10 +17,14 @@
                <image>
                   <Image url="@pfp.png" />
                </image></ImageView>
-            <Label fx:id="txtCurrentUser" alignment="TOP_CENTER" prefHeight="30.0" prefWidth="115.0" text="Current User" textFill="#5b85aa">
+            <Label fx:id="txtCurrentUser" alignment="TOP_CENTER" prefHeight="30.0" prefWidth="110.0" text="Current User" textFill="#5b85aa">
                <font>
                   <Font name="System Bold Italic" size="12.0" />
                </font></Label>
+            <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="110.0" text="Button" />
+            <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="110.0" text="Button" />
+            <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="110.0" text="Button" />
+            <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="110.0" text="Button" />
          </children>
          <opaqueInsets>
             <Insets />
