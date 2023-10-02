@@ -19,6 +19,11 @@ public class Main extends Application {
         stage.show();
     }
 
+    @Override
+    public void stop() { //detects when a user is exiting program
+        System.out.println("Stage is closing");
+    }
+
     public static void main(String[] args) {
         launch();
     }
