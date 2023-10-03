@@ -13,10 +13,9 @@ import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class LoginController {
+public class LoginController{
     public LoginModel loginModel = new LoginModel();
 
     @FXML
@@ -50,7 +49,7 @@ public class LoginController {
                     User user = loginModel.getUserFromID(Integer.parseInt(txtID.getText()));
                     //store user details in controller
                     HubController hubController = (HubController)fxmlLoader.getController();
-                    hubController.setUser(user);
+                    hubController.setCurrentUser(user);
                     //set stage
                     Stage stage = new Stage();
                     stage.getIcons().add(new Image("file:src/icon.png"));

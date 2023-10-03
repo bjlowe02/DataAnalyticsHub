@@ -1,5 +1,6 @@
 package rmit.dataanalyticshub;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -7,7 +8,6 @@ import javafx.scene.layout.Pane;
 
 public class HubController {
     public HubModel hubModel = new HubModel();
-    private User currentUser;
 
     //FXML variables
     @FXML
@@ -31,29 +31,32 @@ public class HubController {
     @FXML
     private Label lblVIP;
 
-    public void setUser(User user){
-        //sets current user
-        this.currentUser = user;
-        //Prepares window and greets user with welcome message
-        //Hide panes
-        paneProfile.setVisible(false);
-        panePost.setVisible(false);
-        //display current user
-        lblWelcome.setText("Welcome back, " +
+    public void setCurrentUser(User user){
+        paneWelcome.setVisible(true);
+        paneWelcome.requestFocus();
+        //puts stores user details into GUI
+        lblFName.setText(user.getFirstName());
+        lblLName.setText(user.getLastName());
+        lblID.setText(String.valueOf(user.getID()));
+        lblVIP.setText(String.valueOf(user.isVIP()));
+        //welcome message
+        lblWelcome.setText("Welcome Back, " +
                 user.getFirstName() + "!");
     }
-
     @FXML
-    protected void onBtnProfileClick(javafx.scene.input.MouseEvent mouseEvent) {
-        //puts stores user details into GUI
-/*        lblFName.setText(currentUser.getFirstName());
-        lblLName.setText(currentUser.getLastName());
-        lblID.setText(String.valueOf(currentUser.getID()));
-        lblVIP.setText(String.valueOf(currentUser.isVIP()));*/
-        //hide other panes
+    protected void onBtnAction(ActionEvent event) { //show/hide relevant panes on different button clicks
+        //always hide welcome pane as it will not be accessed again
         paneWelcome.setVisible(false);
-        panePost.setVisible(false);
-        //show profile pane
-        paneProfile.setVisible(true);
+        //on Profile click
+        if (event.getSource() == btnProfile){
+            //show/hide panes
+            panePost.setVisible(false);
+            paneProfile.setVisible(true);
+        } else if (event.getSource() == btnPost) {
+            //show/hide panels
+            paneProfile.setVisible(false);
+            panePost.setVisible(true);
+        }
+
     }
 }
