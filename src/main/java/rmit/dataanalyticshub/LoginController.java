@@ -44,7 +44,7 @@ public class LoginController{
                     ((Node)event.getSource()).getScene().getWindow().hide();
                     //open next from with logged-in user
                     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Hub.fxml"));
-                    Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+                    Scene scene = new Scene(fxmlLoader.load(), 600, 425);
                     //get full user details
                     User user = loginModel.getUserFromID(Integer.parseInt(txtID.getText()));
                     //store user details in controller

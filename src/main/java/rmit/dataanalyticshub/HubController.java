@@ -3,7 +3,9 @@ package rmit.dataanalyticshub;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
 import javafx.scene.layout.Pane;
 
 public class HubController {
@@ -30,6 +32,12 @@ public class HubController {
     private Label lblID;
     @FXML
     private Label lblVIP;
+    @FXML
+    private DatePicker datePicker;
+    @FXML
+    private Spinner<Integer> spinHour;
+    @FXML
+    private Spinner<Integer> spinMinute;
 
     public void setCurrentUser(User user){
         paneWelcome.setVisible(true);
@@ -52,11 +60,20 @@ public class HubController {
             //show/hide panes
             panePost.setVisible(false);
             paneProfile.setVisible(true);
+            //set button effect
+            btnProfile.setStyle("-fx-background-color: white;" +
+                    "-fx-text-fill: #6F5CC2;");
+            btnPost.setStyle("-fx-background-color: #6F5CC2;" +
+                    "-fx-text-fill: white;");
         } else if (event.getSource() == btnPost) {
             //show/hide panels
             paneProfile.setVisible(false);
             panePost.setVisible(true);
+            //set button effect
+            btnPost.setStyle("-fx-background-color: white;" +
+                    "-fx-text-fill: #6F5CC2;");
+            btnProfile.setStyle("-fx-background-color: #6F5CC2;" +
+                    "-fx-text-fill: white;");
         }
-
     }
 }
