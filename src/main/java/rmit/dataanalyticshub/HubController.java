@@ -6,24 +6,28 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 
 public class HubController {
     public HubModel hubModel = new HubModel();
 
     //FXML variables
+    //Welcome pane
     @FXML
     private Label lblWelcome;
     @FXML
-    private Pane paneProfile;
-    @FXML
-    private Pane panePost;
-    @FXML
     private Pane paneWelcome;
+    //Welcome pane
+    //Navigation buttons
     @FXML
     private Button btnProfile;
     @FXML
     private Button btnPost;
+    //Navigation buttons
+    //Profile
+    @FXML
+    private Pane paneProfile;
     @FXML
     private Label lblFName;
     @FXML
@@ -32,12 +36,17 @@ public class HubController {
     private Label lblID;
     @FXML
     private Label lblVIP;
+    //Profile
+    //Post add
+    @FXML
+    private Pane panePost;
     @FXML
     private DatePicker datePicker;
     @FXML
     private Spinner<Integer> spinHour;
     @FXML
     private Spinner<Integer> spinMinute;
+    //Post add
 
     public void setCurrentUser(User user){
         paneWelcome.setVisible(true);
@@ -50,13 +59,15 @@ public class HubController {
         //welcome message
         lblWelcome.setText("Welcome Back, " +
                 user.getFirstName() + "!");
+
+        //TODO if not VIP hide special functions
     }
     @FXML
     protected void onBtnAction(ActionEvent event) { //show/hide relevant panes on different button clicks
         //always hide welcome pane as it will not be accessed again
         paneWelcome.setVisible(false);
-        //on Profile click
-        if (event.getSource() == btnProfile){
+
+        if (event.getSource() == btnProfile){   //on Profile click
             //show/hide panes
             panePost.setVisible(false);
             paneProfile.setVisible(true);
@@ -65,7 +76,7 @@ public class HubController {
                     "-fx-text-fill: #6F5CC2;");
             btnPost.setStyle("-fx-background-color: #6F5CC2;" +
                     "-fx-text-fill: white;");
-        } else if (event.getSource() == btnPost) {
+        } else if (event.getSource() == btnPost) {  //on Post click
             //show/hide panels
             paneProfile.setVisible(false);
             panePost.setVisible(true);
@@ -75,5 +86,10 @@ public class HubController {
             btnProfile.setStyle("-fx-background-color: #6F5CC2;" +
                     "-fx-text-fill: white;");
         }
+    }
+
+    @FXML
+    protected void onKeyPressed(KeyEvent event) {
+
     }
 }
