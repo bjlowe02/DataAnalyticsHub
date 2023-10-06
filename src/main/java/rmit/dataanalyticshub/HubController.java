@@ -106,7 +106,7 @@ public class HubController {
             public void changed(ObservableValue<? extends String> observable, String oldValue,
                                 String newValue) {
                 if (!newValue.matches("\\d*")) {
-                    txtAddPostID.setText(newValue.replaceAll("[^\\d]", ""));
+                    txtAddPostID.setText(newValue.replaceAll("\\D", ""));
                 }
             }
         });
@@ -116,7 +116,7 @@ public class HubController {
             public void changed(ObservableValue<? extends String> observable, String oldValue,
                                 String newValue) {
                 if (!newValue.matches("\\d*")) {
-                    txtAddLikes.setText(newValue.replaceAll("[^\\d]", ""));
+                    txtAddLikes.setText(newValue.replaceAll("\\D", ""));
                 }
             }
         });
@@ -126,7 +126,7 @@ public class HubController {
             public void changed(ObservableValue<? extends String> observable, String oldValue,
                                 String newValue) {
                 if (!newValue.matches("\\d*")) {
-                    txtAddShares.setText(newValue.replaceAll("[^\\d]", ""));
+                    txtAddShares.setText(newValue.replaceAll("\\D", ""));
                 }
             }
         });
