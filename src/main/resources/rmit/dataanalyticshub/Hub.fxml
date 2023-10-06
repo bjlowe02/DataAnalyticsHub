@@ -152,15 +152,15 @@
                                     <FlowPane orientation="VERTICAL" prefHeight="350.0" prefWidth="500.0">
                                        <children>
                                           <Label text="Post ID:" />
-                                          <TextField />
+                                          <TextField fx:id="txtAddPostID" onKeyPressed="#onKeyPressed" />
                                           <Label text="Content:" />
-                                          <TextField />
+                                          <TextField fx:id="txtAddContent" />
                                           <Label text="Author:" />
-                                          <TextField />
+                                          <TextField fx:id="txtAddAuthor" />
                                           <Label text="No. Likes:" />
-                                          <TextField />
+                                          <TextField fx:id="txtAddLikes" onKeyPressed="#onKeyPressed" />
                                           <Label text="No. Shares:" />
-                                          <TextField />
+                                          <TextField fx:id="txtAddShares" onKeyPressed="#onKeyPressed" />
                                           <Label text="Date-Time:" />
                                           <GridPane prefHeight="30.0" prefWidth="326.0">
                                             <columnConstraints>

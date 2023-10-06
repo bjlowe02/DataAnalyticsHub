@@ -1,11 +1,10 @@
 package rmit.dataanalyticshub;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 
@@ -40,6 +39,16 @@ public class HubController {
     //Post add
     @FXML
     private Pane panePost;
+    @FXML
+    private TextField txtAddPostID;
+    @FXML
+    private TextField txtAddContent;
+    @FXML
+    private TextField txtAddAuthor;
+    @FXML
+    private TextField txtAddLikes;
+    @FXML
+    private TextField txtAddShares;
     @FXML
     private DatePicker datePicker;
     @FXML
@@ -90,6 +99,36 @@ public class HubController {
 
     @FXML
     protected void onKeyPressed(KeyEvent event) {
-
+        // force the field to be numeric only
+        //ID text field
+        txtAddPostID.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    txtAddPostID.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
+        //No. of likes text field
+        txtAddLikes.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    txtAddLikes.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
+        //No. of shares text field
+        txtAddShares.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    txtAddShares.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
     }
 }
