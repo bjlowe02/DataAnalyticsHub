@@ -1,29 +1,37 @@
 package rmit.dataanalyticshub;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 public class LoginController{
     public LoginModel loginModel = new LoginModel();
 
     @FXML
+    private VBox paneLogin;
+    @FXML
     private TextField txtID;
     @FXML
     private PasswordField txtPassword;
     @FXML
-    public Button btnLogin;
+    private Button btnLogin;
+    @FXML
+    private Hyperlink lnkCreateAccount;
 
     @FXML
     protected void onBtnLoginAction(ActionEvent event){
@@ -70,5 +78,19 @@ public class LoginController{
                 System.out.println(e);
             }
         }
+    }
+
+    @FXML
+    protected void onLinkClick(ActionEvent event) throws IOException {
+        //hide login form for later use
+        ((Node)event.getSource()).getScene().getWindow().hide();
+        //show create account form
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("CreateAccount.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        Stage stage = new Stage();
+        stage.getIcons().add(new Image("file:src/icon.png"));
+        stage.setTitle("Data Analytics Hub | Create Account");
+        stage.setScene(scene);
+        stage.show();
     }
 }
