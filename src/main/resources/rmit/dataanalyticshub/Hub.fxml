@@ -66,7 +66,7 @@
          <center>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <BorderPane fx:id="paneProfile" prefHeight="350.0" prefWidth="500.0" visible="false">
+                  <BorderPane fx:id="paneProfile" prefHeight="350.0" prefWidth="500.0">
                      <top>
                         <Label prefHeight="75.0" prefWidth="500.0" text="Your Details" textFill="#52438f" BorderPane.alignment="CENTER">
                            <font>
@@ -78,7 +78,7 @@
                         <Insets left="15.0" />
                      </padding>
                      <bottom>
-                        <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="140.0" stylesheets="@styleSheet.css" text="Edit Details" textFill="WHITE" BorderPane.alignment="CENTER_LEFT">
+                        <Button fx:id="btnEditProfile" mnemonicParsing="false" onAction="#onBtnEditProfileAction" prefHeight="40.0" prefWidth="140.0" stylesheets="@styleSheet.css" text="Edit Details" textFill="WHITE" BorderPane.alignment="CENTER_LEFT">
                            <font>
                               <Font name="Georgia Bold Italic" size="12.0" />
                            </font>
@@ -88,7 +88,7 @@
                         </Button>
                      </bottom>
                      <left>
-                        <FlowPane orientation="VERTICAL" prefHeight="200.0" prefWidth="485.0" rowValignment="TOP" BorderPane.alignment="CENTER">
+                        <FlowPane fx:id="paneDetails" orientation="VERTICAL" prefHeight="200.0" prefWidth="485.0" rowValignment="TOP" BorderPane.alignment="CENTER">
                            <children>
                               <Label text="First Name:">
                                  <font>
@@ -143,7 +143,7 @@
                         </FlowPane>
                      </left>
                   </BorderPane>
-                  <Pane fx:id="panePost" layoutY="9.0" prefHeight="341.0" prefWidth="500.0">
+                  <Pane fx:id="panePost" layoutY="9.0" prefHeight="341.0" prefWidth="500.0" visible="false">
                      <children>
                         <TabPane layoutX="3.0" layoutY="-9.0" prefHeight="359.0" prefWidth="492.0" tabClosingPolicy="UNAVAILABLE">
                           <tabs>
@@ -185,7 +185,7 @@
                                                 </Spinner>
                                              </children>
                                           </GridPane>
-                                          <Button mnemonicParsing="false" onAction="#onBtnAction" prefHeight="28.0" prefWidth="126.0" stylesheets="@styleSheet.css" text="Add" textFill="WHITE">
+                                          <Button fx:id="btnAddPost" mnemonicParsing="false" onAction="#onBtnAddAction" prefHeight="28.0" prefWidth="126.0" stylesheets="@styleSheet.css" text="Add" textFill="WHITE">
                                              <font>
                                                 <Font name="Georgia Bold Italic" size="12.0" />
                                              </font>

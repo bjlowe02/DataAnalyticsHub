@@ -4,9 +4,15 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class HubController {
     public HubModel hubModel = new HubModel();
@@ -35,6 +41,10 @@ public class HubController {
     private Label lblID;
     @FXML
     private Label lblVIP;
+    @FXML
+    private Button btnEditProfile;
+    @FXML
+    private FlowPane paneDetails;
     //Profile
     //Post add
     @FXML
@@ -55,9 +65,11 @@ public class HubController {
     private Spinner<Integer> spinHour;
     @FXML
     private Spinner<Integer> spinMinute;
+    @FXML
+    private Button btnAddPost;
     //Post add
 
-    public void setCurrentUser(User user){
+    public void setCurrentUser(User user) {
         paneWelcome.setVisible(true);
         paneWelcome.requestFocus();
         //puts stores user details into GUI
@@ -71,12 +83,13 @@ public class HubController {
 
         //TODO if not VIP hide special functions
     }
+
     @FXML
     protected void onBtnAction(ActionEvent event) { //show/hide relevant panes on different button clicks
         //always hide welcome pane as it will not be accessed again
         paneWelcome.setVisible(false);
 
-        if (event.getSource() == btnProfile){   //on Profile click
+        if (event.getSource() == btnProfile) {   //on Profile click
             //show/hide panes
             panePost.setVisible(false);
             paneProfile.setVisible(true);
@@ -130,5 +143,40 @@ public class HubController {
                 }
             }
         });
+    }
+
+    @FXML
+    protected void onBtnAddAction(ActionEvent event) {
+        try {
+            int ID = Integer.parseInt(txtAddPostID.getText());
+            String content = txtAddContent.getText();
+            String author = txtAddAuthor.getText();
+            int likes = Integer.parseInt(txtAddLikes.getText());
+            int shares = Integer.parseInt(txtAddShares.getText());
+            String date = datePicker.getValue().toString();
+            System.out.println(date);
+        } catch (Exception ex) {
+
+        }
+    }
+
+    @FXML
+    protected void onBtnEditProfileAction(ActionEvent event) {
+/*        int currentPos = 0;
+        Map<Integer, TextField> toInsert = new HashMap<>(); // map with TextFields that need to be inserted at position
+        for (Iterator<Node> iterator = paneDetails.getChildren().iterator(); iterator.hasNext(); ) {
+            Node child = iterator.next();
+            if (child instanceof Label) {
+                    Label lbl = (Label)child;
+                    TextField text = new TextField(lbl.getText());
+                    iterator.remove(); // remove the label that is at index currentPos
+                    toInsert.put(currentPos, text);
+            }
+            currentPos++;
+        }
+        for (Integer pos : toInsert.keySet()) {
+            TextField field = toInsert.get(pos);
+            paneDetails.getChildren().add(pos, field); // Add the Text field at the old position of the Label
+        }*/
     }
 }
