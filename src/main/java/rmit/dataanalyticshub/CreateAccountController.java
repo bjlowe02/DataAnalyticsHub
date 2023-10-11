@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
 import javax.swing.*;
+import java.sql.SQLException;
 
 public class CreateAccountController {
     @FXML
@@ -22,23 +23,54 @@ public class CreateAccountController {
     @FXML
     private Button btnCreateAccount;
 
+    CreateAccountModel model = new CreateAccountModel();
+
     @FXML
     protected void onBtnCreateAccountAction(ActionEvent event) {
         if (!txtFName.getText().isEmpty() ||
                 !txtLName.getText().isEmpty() ||
                 !txtPassword.getText().isEmpty() ||
                 !txtRepeatPassword.getText().isEmpty()){
-            try {
-                //add user to sqlite
+
+            if (txtPassword.getText().equals(txtRepeatPassword.getText())){
+                //Gather input
                 String firstname = txtFName.getText();
                 String lastname = txtLName.getText();
                 String password = txtPassword.getText();
-                User newAcc = new User(firstname, lastname, password);
-            } catch (Exception ex){
-
-            }
+                //New user is created without ID and will be added via auto-increment in db
+                User newAcc = new User(firstname,lastname,password);
+                //add user to sqlite
+                try {
+                    if (model.insertUser(newAcc)){
+                        System.out.println("SQL Success");
+                    } else {
+                        //warning message: SQL insert error
+                        JOptionPane.showMessageDialog(null,
+                                "There was an issue adding new account to database!\n" +
+                                        "Please try again!",
+                                "Account Error!", JOptionPane.WARNING_MESSAGE);
+                    }
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            } else {
+                //warning message: passwords don't match
+                JOptionPane.showMessageDialog(null,
+                        "Passwords do not match!\n" +
+                                "Please try again!",
+                        "Password Error!", JOptionPane.WARNING_MESSAGE);
+                //clear input fields
+                txtFName.clear();
+                txtLName.clear();
+                txtPassword.clear();
+                txtRepeatPassword.clear();
+                }
         } else {
-
+            //warning message: empty field(s)
+            JOptionPane.showMessageDialog(null,
+                    "One or more fields were empty!\n" +
+                            "Please complete details and try again!",
+                    "Empty Field(s)!", JOptionPane.WARNING_MESSAGE);
         }
     }
 }
