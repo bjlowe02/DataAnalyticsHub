@@ -8,6 +8,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
+import javax.swing.*;
+
 public class CreateAccountController {
     @FXML
     private TextField txtFName;
@@ -21,11 +23,21 @@ public class CreateAccountController {
     private Button btnCreateAccount;
 
     @FXML
-    protected void onBtnCreateAccountAction(ActionEvent event){
+    protected void onBtnCreateAccountAction(ActionEvent event) {
         if (!txtFName.getText().isEmpty() ||
                 !txtLName.getText().isEmpty() ||
                 !txtPassword.getText().isEmpty() ||
                 !txtRepeatPassword.getText().isEmpty()){
+            try {
+                //add user to sqlite
+                String firstname = txtFName.getText();
+                String lastname = txtLName.getText();
+                String password = txtPassword.getText();
+                User newAcc = new User(firstname, lastname, password);
+            } catch (Exception ex){
+
+            }
+        } else {
 
         }
     }

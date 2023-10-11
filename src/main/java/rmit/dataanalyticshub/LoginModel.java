@@ -46,12 +46,14 @@ public class LoginModel {
 
             String firstName = "";
             String lastName = "";
+            boolean VIP = false;
 
             while(resultSet.next()) {
                 firstName = resultSet.getString("firstName");
                 lastName = resultSet.getString("lastName");
+                VIP = resultSet.getBoolean("VIP");
             }
-            return new User(ID, firstName, lastName);
+            return new User(ID, firstName, lastName, VIP);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {

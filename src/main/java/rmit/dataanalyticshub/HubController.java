@@ -4,15 +4,10 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 public class HubController {
     public HubModel hubModel = new HubModel();
@@ -73,13 +68,13 @@ public class HubController {
         paneWelcome.setVisible(true);
         paneWelcome.requestFocus();
         //puts stores user details into GUI
-        lblFName.setText(user.getFirstName());
-        lblLName.setText(user.getLastName());
+        lblFName.setText(user.getFirstname());
+        lblLName.setText(user.getLastname());
         lblID.setText(String.valueOf(user.getID()));
         lblVIP.setText(String.valueOf(user.isVIP()));
         //welcome message
         lblWelcome.setText("Welcome Back, " +
-                user.getFirstName() + "!");
+                user.getFirstname() + "!");
 
         //TODO if not VIP hide special functions
     }
