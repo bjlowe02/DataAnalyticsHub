@@ -2,6 +2,7 @@ package rmit.dataanalyticshub;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -42,7 +43,15 @@ public class CreateAccountController {
                 //add user to sqlite
                 try {
                     if (model.insertUser(newAcc)){
-                        System.out.println("SQL Success");
+                        JOptionPane.showMessageDialog(null,
+                                "Account created!\n" +
+                                        "Please store this details to log-in.\n" +
+                                        "ID: []\n" +
+                                        "Password: []",
+                                "Success!", JOptionPane.PLAIN_MESSAGE);
+                        //TODO open last form
+                        //close current form
+                        ((Node)event.getSource()).getScene().getWindow().hide();
                     } else {
                         //warning message: SQL insert error
                         JOptionPane.showMessageDialog(null,
