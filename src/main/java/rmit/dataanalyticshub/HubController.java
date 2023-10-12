@@ -10,6 +10,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 
+import javax.swing.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
@@ -149,6 +150,7 @@ public class HubController {
 
     @FXML
     protected void onBtnAddAction(ActionEvent event) {
+        //TODO check fields are not empty
         try {
             int postID = Integer.parseInt(txtAddPostID.getText());
             String content = txtAddContent.getText();
@@ -158,9 +160,17 @@ public class HubController {
             String date_Time = lblPreviewDate.getText();
             //creat new post
             Post post = new Post(postID,content,author,likes,shares,date_Time);
-            hubModel.insertPost(post);
-        } catch (InputMismatchException ex) {
+            if (hubModel.insertPost(post)){
 
+            } else {
+                //warning message: SQL insert error
+                JOptionPane.showMessageDialog(null,
+                        "There was an issue adding new post to database!\n" +
+                                "Please try again!",
+                        "Post Error!", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
     }
 

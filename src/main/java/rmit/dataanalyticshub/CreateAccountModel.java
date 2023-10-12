@@ -39,7 +39,7 @@ public class CreateAccountModel {
                 return ID;
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 }
