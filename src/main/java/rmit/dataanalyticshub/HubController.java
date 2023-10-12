@@ -3,11 +3,16 @@ package rmit.dataanalyticshub;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.InputMismatchException;
 
 public class HubController {
     public HubModel hubModel = new HubModel();
@@ -54,6 +59,8 @@ public class HubController {
     private TextField txtAddLikes;
     @FXML
     private TextField txtAddShares;
+    @FXML
+    private Label lblPreviewDate;
     @FXML
     private DatePicker datePicker;
     @FXML
@@ -143,35 +150,44 @@ public class HubController {
     @FXML
     protected void onBtnAddAction(ActionEvent event) {
         try {
-            int ID = Integer.parseInt(txtAddPostID.getText());
+            int postID = Integer.parseInt(txtAddPostID.getText());
             String content = txtAddContent.getText();
             String author = txtAddAuthor.getText();
             int likes = Integer.parseInt(txtAddLikes.getText());
             int shares = Integer.parseInt(txtAddShares.getText());
-            String date = datePicker.getValue().toString();
-            System.out.println(date);
-        } catch (Exception ex) {
+            String date_Time = lblPreviewDate.getText();
+            //creat new post
+            Post post = new Post(postID,content,author,likes,shares,date_Time);
+            hubModel.insertPost(post);
+        } catch (InputMismatchException ex) {
 
         }
     }
 
     @FXML
+    protected void onDateChanged(ActionEvent event){
+        displayDateChange();
+    }
+    @FXML
+    protected void onTimeChanged(Event event){
+        displayDateChange();
+    }
+    //The above two events are responsible for getting datePicker and hour/minute Spinner changes, respectively.
+    //'onDateChange' gets date picker changes and 'onTimeChange' is responsible for both key and mouse events of spinners.
+    //They of course trigger the same method below
+    private void displayDateChange(){
+        //Format date time and display in preview label
+        LocalDate date = datePicker.getValue();
+        DateTimeFormatter DTF = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String hour = String.format("%02d", spinHour.getValue());
+        String minute = String.format("%02d", spinMinute.getValue());
+        String date_time = DTF.format(date) + " " +
+                hour + ":" + minute;
+        lblPreviewDate.setText(date_time);
+    }
+
+    @FXML
     protected void onBtnEditProfileAction(ActionEvent event) {
-/*        int currentPos = 0;
-        Map<Integer, TextField> toInsert = new HashMap<>(); // map with TextFields that need to be inserted at position
-        for (Iterator<Node> iterator = paneDetails.getChildren().iterator(); iterator.hasNext(); ) {
-            Node child = iterator.next();
-            if (child instanceof Label) {
-                    Label lbl = (Label)child;
-                    TextField text = new TextField(lbl.getText());
-                    iterator.remove(); // remove the label that is at index currentPos
-                    toInsert.put(currentPos, text);
-            }
-            currentPos++;
-        }
-        for (Integer pos : toInsert.keySet()) {
-            TextField field = toInsert.get(pos);
-            paneDetails.getChildren().add(pos, field); // Add the Text field at the old position of the Label
-        }*/
+        //TODO allow user to edit profile details
     }
 }

@@ -5,26 +5,21 @@ import java.sql.*;
 public class CreateAccountModel {
 
     public boolean insertUser(User user) throws SQLException {
-        //Get user variables ready to inject
-        String firstname = user.getFirstname();
-        String lastname = user.getLastname();
-        String password = user.getPassword();
-        boolean VIP =  user.isVIP();
         //Prepare SQL query
         String sql = "INSERT INTO users (id, password, firstName, lastName, VIP) " +
                 "VALUES (?, ?, ?, ?, ?)";
-
         try (Connection conn = SqliteConnection.Connector();
                 PreparedStatement preparedStatement = conn.prepareStatement(sql);){
             //ID set to auto-increment in sqlite
-            preparedStatement.setString(2, password);
-            preparedStatement.setString(3, firstname);
-            preparedStatement.setString(4, lastname);
-            preparedStatement.setBoolean(5, VIP);
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setString(3, user.getFirstname());
+            preparedStatement.setString(4, user.getLastname());
+            preparedStatement.setBoolean(5, user.isVIP());
 
-            int result = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
             return true;
         } catch (SQLException ex){
+            System.out.println(ex.getMessage());
             return false;
         }
     }
@@ -44,7 +39,7 @@ public class CreateAccountModel {
                 return ID;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
         }
     }
 }
