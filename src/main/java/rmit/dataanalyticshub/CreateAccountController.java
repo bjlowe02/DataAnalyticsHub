@@ -48,7 +48,7 @@ public class CreateAccountController {
                 //add user to sqlite
                 try {
                     if (model.insertUser(newAcc)){
-                        //Display now login details
+                        //Display new login details
                         //Gets ID from db auto-increment and password which is inputted earlier
                         JOptionPane.showMessageDialog(null,
                                 "Account created!\n" +
