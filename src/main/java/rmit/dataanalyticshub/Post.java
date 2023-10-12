@@ -16,4 +16,28 @@ public class Post {
         this.shares = shares;
         this.date_time = date_time;
     }
+
+    public int getPostID() {
+        return postID;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public int getShares() {
+        return shares;
+    }
+
+    public String getDate_time() {
+        return date_time;
+    }
 }
