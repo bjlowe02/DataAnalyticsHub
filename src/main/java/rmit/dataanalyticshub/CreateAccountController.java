@@ -2,14 +2,19 @@ package rmit.dataanalyticshub;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class CreateAccountController {
@@ -43,13 +48,22 @@ public class CreateAccountController {
                 //add user to sqlite
                 try {
                     if (model.insertUser(newAcc)){
+                        //Display now login details
+                        //Gets ID from db auto-increment and password which is inputted earlier
                         JOptionPane.showMessageDialog(null,
                                 "Account created!\n" +
                                         "Please store this details to log-in.\n" +
-                                        "ID: []\n" +
-                                        "Password: []",
+                                        "ID: " + model.getLastInsertedID() + "\n" +
+                                        "Password: " + password,
                                 "Success!", JOptionPane.PLAIN_MESSAGE);
-                        //TODO open last form
+                        //Open last form
+                            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Login.fxml"));
+                            Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+                            Stage stage = new Stage();
+                            stage.getIcons().add(new Image("file:src/icon.png"));
+                            stage.setTitle("Data Analytics Hub | Login");
+                            stage.setScene(scene);
+                            stage.show();
                         //close current form
                         ((Node)event.getSource()).getScene().getWindow().hide();
                     } else {
@@ -61,6 +75,8 @@ public class CreateAccountController {
                     }
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
             } else {
                 //warning message: passwords don't match
