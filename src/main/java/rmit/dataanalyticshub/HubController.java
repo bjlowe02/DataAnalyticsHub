@@ -76,7 +76,7 @@ public class HubController {
         lblWelcome.setText("Welcome Back, " +
                 user.getFirstname() + "!");
 
-        //TODO if not VIP hide special functions
+        //TODO if VIP show special functions
     }
 
     @FXML
