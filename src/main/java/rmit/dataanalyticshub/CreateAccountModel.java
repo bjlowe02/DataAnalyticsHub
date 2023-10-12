@@ -9,7 +9,7 @@ public class CreateAccountModel {
         String firstname = user.getFirstname();
         String lastname = user.getLastname();
         String password = user.getPassword();
-        Boolean VIP =  user.isVIP();
+        boolean VIP =  user.isVIP();
         //Prepare SQL query
         String sql = "INSERT INTO users (id, password, firstName, lastName, VIP) " +
                 "VALUES (?, ?, ?, ?, ?)";
