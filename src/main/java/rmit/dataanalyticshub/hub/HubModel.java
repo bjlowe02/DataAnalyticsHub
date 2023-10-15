@@ -1,4 +1,7 @@
-package rmit.dataanalyticshub;
+package rmit.dataanalyticshub.hub;
+
+import rmit.dataanalyticshub.Post;
+import rmit.dataanalyticshub.SqliteConnection;
 
 import java.sql.*;
 
@@ -9,7 +12,7 @@ public class HubModel {
         String sql = "INSERT INTO posts (postID, content, author, likes, shares, date_time) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = SqliteConnection.Connector();
-                PreparedStatement preparedStatement = conn.prepareStatement(sql);){
+             PreparedStatement preparedStatement = conn.prepareStatement(sql);){
             preparedStatement.setInt(1, post.getPostID());
             preparedStatement.setString(2, post.getContent());
             preparedStatement.setString(3, post.getAuthor());

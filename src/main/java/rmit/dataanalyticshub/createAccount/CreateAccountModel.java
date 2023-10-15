@@ -1,4 +1,7 @@
-package rmit.dataanalyticshub;
+package rmit.dataanalyticshub.createAccount;
+
+import rmit.dataanalyticshub.SqliteConnection;
+import rmit.dataanalyticshub.User;
 
 import java.sql.*;
 
@@ -9,7 +12,7 @@ public class CreateAccountModel {
         String sql = "INSERT INTO users (id, password, firstName, lastName, VIP) " +
                 "VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = SqliteConnection.Connector();
-                PreparedStatement preparedStatement = conn.prepareStatement(sql);){
+             PreparedStatement preparedStatement = conn.prepareStatement(sql);){
             //ID set to auto-increment in sqlite
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.setString(3, user.getFirstname());
