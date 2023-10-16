@@ -22,13 +22,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="425.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rmit.dataanalyticshub.hub.HubController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="425.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rmit.dataanalyticshub.hub.HubController">
    <top>
       <HBox prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: #52438F;" BorderPane.alignment="CENTER">
          <children>
             <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../resources/rmit/dataanalyticshub/icon.png" />
+                  <Image url="@../../images/icon.png" />
                </image>
                <HBox.margin>
                   <Insets bottom="5.0" left="5.0" top="5.0" />
