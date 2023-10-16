@@ -1,4 +1,4 @@
-package rmit.dataanalyticshub;
+package rmit.dataanalyticshub.hub;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -9,11 +9,12 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import rmit.dataanalyticshub.Post;
+import rmit.dataanalyticshub.User;
 
 import javax.swing.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.InputMismatchException;
 
 public class HubController {
     public HubModel hubModel = new HubModel();

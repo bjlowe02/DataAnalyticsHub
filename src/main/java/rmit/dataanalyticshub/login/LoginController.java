@@ -1,26 +1,25 @@
-package rmit.dataanalyticshub;
+package rmit.dataanalyticshub.login;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import rmit.dataanalyticshub.Main;
+import rmit.dataanalyticshub.User;
+import rmit.dataanalyticshub.hub.HubController;
 
 import javax.swing.*;
 import java.io.IOException;
-import java.net.URL;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
 
 public class LoginController{
     public LoginModel loginModel = new LoginModel();
+    private final String ICON = "file:src/main/resources/rmit/dataanalyticshub/images/icon.png";
 
     @FXML
     private VBox paneLogin;
@@ -51,7 +50,7 @@ public class LoginController{
                     //close current form
                     ((Node)event.getSource()).getScene().getWindow().hide();
                     //open next from with logged-in user
-                    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Hub.fxml"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("views/hub/Hub.fxml"));
                     Scene scene = new Scene(fxmlLoader.load(), 600, 425);
                     //get full user details
                     User user = loginModel.getUserFromID(Integer.parseInt(txtID.getText()));
@@ -60,7 +59,7 @@ public class LoginController{
                     hubController.setCurrentUser(user);
                     //set stage
                     Stage stage = new Stage();
-                    stage.getIcons().add(new Image("file:src/icon.png"));
+                    stage.getIcons().add(new Image(ICON)); /*todo*/
                     stage.setTitle("Data Analytics Hub");
                     stage.setScene(scene);
                     stage.show();
@@ -85,10 +84,10 @@ public class LoginController{
         //hide login form for later use
         ((Node)event.getSource()).getScene().getWindow().hide();
         //show create account form
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("CreateAccount.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("views/createAccount/CreateAccount.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         Stage stage = new Stage();
-        stage.getIcons().add(new Image("file:src/icon.png"));
+        stage.getIcons().add(new Image(ICON));
         stage.setTitle("Data Analytics Hub | Create Account");
         stage.setScene(scene);
         stage.show();

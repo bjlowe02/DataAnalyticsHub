@@ -1,4 +1,7 @@
-package rmit.dataanalyticshub;
+package rmit.dataanalyticshub.login;
+
+import rmit.dataanalyticshub.SqliteConnection;
+import rmit.dataanalyticshub.User;
 
 import java.sql.*;
 
