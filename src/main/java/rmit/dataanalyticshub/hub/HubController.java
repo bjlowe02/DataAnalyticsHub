@@ -2,10 +2,14 @@ package rmit.dataanalyticshub.hub;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
@@ -13,8 +17,10 @@ import rmit.dataanalyticshub.Post;
 import rmit.dataanalyticshub.User;
 
 import javax.swing.*;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ResourceBundle;
 
 public class HubController {
     public HubModel hubModel = new HubModel();
@@ -72,10 +78,19 @@ public class HubController {
     @FXML
     private Button btnAddPost;
     //Post add
+    //Post retrieve
+    @FXML
+    private TableView<Post> table;
+        @FXML private TableColumn<Post, Integer> colId;
+        @FXML private TableColumn<Post, String> colContent;
+        @FXML private TableColumn<Post, String> colAuthor;
+        @FXML private TableColumn<Post, Integer> colLikes;
+        @FXML private TableColumn<Post, Integer> colShares;
+        @FXML private TableColumn<Post, String> colDate_time;
+    public ObservableList<Post> listPost = FXCollections.observableArrayList();
+    //Post retrieve
 
     public void setCurrentUser(User user) {
-        paneWelcome.setVisible(true);
-        paneWelcome.requestFocus();
         //puts stores user details into GUI
         lblFName.setText(user.getFirstname());
         lblLName.setText(user.getLastname());
@@ -85,9 +100,25 @@ public class HubController {
         lblWelcome.setText("Welcome Back, " +
                 user.getFirstname() + "!");
 
+        setCellTable();
+        hubModel.loadDataFromDatabase();
+        System.out.println("yes");
+    }
+    private void setCellTable(){
+        colId.setCellValueFactory(new PropertyValueFactory<>("postID"));
+        colContent.setCellValueFactory(new PropertyValueFactory<>("content"));
+        colAuthor.setCellValueFactory(new PropertyValueFactory<>("author"));
+        colLikes.setCellValueFactory(new PropertyValueFactory<>("likes"));
+        colShares.setCellValueFactory(new PropertyValueFactory<>("shares"));
+        colDate_time.setCellValueFactory(new PropertyValueFactory<>("date_time"));
+
+    }
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        //Show welcome
+        paneWelcome.setVisible(true);
+        paneWelcome.requestFocus();
         //TODO if VIP show special functions
     }
-
     @FXML
     protected void onBtnAction(ActionEvent event) { //show/hide relevant panes on different button clicks
         //always hide welcome pane as it will not be accessed again
@@ -113,7 +144,6 @@ public class HubController {
                     "-fx-text-fill: white;");
         }
     }
-
     @FXML
     protected void onKeyPressed(KeyEvent event) {
         // force the field to be numeric only
@@ -148,33 +178,55 @@ public class HubController {
             }
         });
     }
-
     @FXML
     protected void onBtnAddAction(ActionEvent event) {
-        //TODO check fields are not empty
-        try {
-            int postID = Integer.parseInt(txtAddPostID.getText());
-            String content = txtAddContent.getText();
-            String author = txtAddAuthor.getText();
-            int likes = Integer.parseInt(txtAddLikes.getText());
-            int shares = Integer.parseInt(txtAddShares.getText());
-            String date_Time = lblPreviewDate.getText();
-            //creat new post
-            Post post = new Post(postID,content,author,likes,shares,date_Time);
-            if (hubModel.insertPost(post)){
+        //Check fields are not empty
+        if (!txtAddPostID.getText().isEmpty() ||
+                !txtAddContent.getText().isEmpty() ||
+                !txtAddAuthor.getText().isEmpty() ||
+                !txtAddLikes.getText().isEmpty() ||
+                !txtAddShares.getText().isEmpty() ||
+                !datePicker.getValue().toString().isEmpty())
 
-            } else {
-                //warning message: SQL insert error
-                JOptionPane.showMessageDialog(null,
-                        "There was an issue adding new post to database!\n" +
-                                "Please try again!",
-                        "Post Error!", JOptionPane.WARNING_MESSAGE);
+            try {
+                int postID = Integer.parseInt(txtAddPostID.getText());
+                String content = txtAddContent.getText();
+                String author = txtAddAuthor.getText();
+                int likes = Integer.parseInt(txtAddLikes.getText());
+                int shares = Integer.parseInt(txtAddShares.getText());
+                String date_Time = lblPreviewDate.getText();
+                if (hubModel.doesIdExist(postID)){
+                    System.out.println("ID exists");
+                }
+                //create new post
+                Post post = new Post(postID,content,author,likes,shares,date_Time);
+                if (hubModel.insertPost(post)){
+                    //Confirmation message
+                    JOptionPane.showMessageDialog(null,
+                            "Post successfully added to the database!",
+                            "Post success!", JOptionPane.PLAIN_MESSAGE);
+                } else {
+                    //warning message: SQL insert error
+                    JOptionPane.showMessageDialog(null,
+                            "There was an issue adding new post to database!\n" +
+                                    "Please try again!",
+                            "Post Error!", JOptionPane.WARNING_MESSAGE);
+                }
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+            } finally {
+                //Clear input
+                txtAddPostID.clear();
+                txtAddContent.clear();
+                txtAddAuthor.clear();
+                txtAddLikes.clear();
+                txtAddShares.clear();
+                datePicker.getEditor().clear();
+                spinHour.getValueFactory().setValue(0);
+                spinMinute.getValueFactory().setValue(0);
+                lblPreviewDate.setText("00/00/0000 00:00");
             }
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
     }
-
     @FXML
     protected void onDateChanged(ActionEvent event){
         displayDateChange();
@@ -196,7 +248,6 @@ public class HubController {
                 hour + ":" + minute;
         lblPreviewDate.setText(date_time);
     }
-
     @FXML
     protected void onBtnEditProfileAction(ActionEvent event) {
         //TODO allow user to edit profile details

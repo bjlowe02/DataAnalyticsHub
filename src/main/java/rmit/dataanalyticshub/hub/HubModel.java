@@ -27,4 +27,42 @@ public class HubModel {
             return false;
         }
     }
+
+    public boolean doesIdExist(int ID){
+        //Prepare SQL query
+        String query = "SELECT postID " +
+                "FROM posts " +
+                "WHERE postID = " + ID;
+        try (Connection conn = SqliteConnection.Connector();
+            Statement stmt = conn.createStatement();){
+
+            ResultSet resultSet = stmt.executeQuery(query);
+            if (resultSet.next()){
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    public void loadDataFromDatabase(){
+        //Prepare SQL query
+        String query = "SELECT * " +
+                "FROM posts ";
+        //TODO get parent controller rather than new or change data retrieve method
+        HubController hubController = new HubController();
+        try (Connection conn = SqliteConnection.Connector();
+            Statement statement = conn.createStatement();){
+
+            ResultSet rs = statement.executeQuery(query);
+            while(rs.next()){
+                hubController.listPost.add(new Post(rs.getInt(1), rs.getString(2),
+                        rs.getString(3), rs.getInt(4), rs.getInt(5),
+                        rs.getString(6)));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }

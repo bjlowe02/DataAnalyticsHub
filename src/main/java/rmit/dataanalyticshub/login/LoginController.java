@@ -59,7 +59,7 @@ public class LoginController{
                     hubController.setCurrentUser(user);
                     //set stage
                     Stage stage = new Stage();
-                    stage.getIcons().add(new Image(ICON)); /*todo*/
+                    stage.getIcons().add(new Image(ICON));
                     stage.setTitle("Data Analytics Hub");
                     stage.setScene(scene);
                     stage.show();
