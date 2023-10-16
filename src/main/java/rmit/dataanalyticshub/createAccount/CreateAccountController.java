@@ -57,10 +57,10 @@ public class CreateAccountController {
                                         "Password: " + password,
                                 "Success!", JOptionPane.PLAIN_MESSAGE);
                         //Open last form
-                            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Login.fxml"));
+                            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("views/login/Login.fxml"));
                             Scene scene = new Scene(fxmlLoader.load(), 320, 240);
                             Stage stage = new Stage();
-                            stage.getIcons().add(new Image("file:src/icon.png"));
+                            stage.getIcons().add(new Image("file:src/main/resources/rmit/dataanalyticshub/images/icon.png"));
                             stage.setTitle("Data Analytics Hub | Login");
                             stage.setScene(scene);
                             stage.show();
