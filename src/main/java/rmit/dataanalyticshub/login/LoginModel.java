@@ -46,7 +46,7 @@ public class LoginModel {
             preparedStatement.setString(1, String.valueOf(ID));
 
             resultSet = preparedStatement.executeQuery();
-
+            
             String firstName = "";
             String lastName = "";
             boolean VIP = false;

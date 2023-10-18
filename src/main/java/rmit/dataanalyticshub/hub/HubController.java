@@ -2,8 +2,6 @@ package rmit.dataanalyticshub.hub;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -18,12 +16,14 @@ import rmit.dataanalyticshub.User;
 
 import javax.swing.*;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
-public class HubController {
+public class HubController implements Initializable{
     public HubModel hubModel = new HubModel();
+    private User currentUser;
 
     //FXML variables
     //Welcome pane
@@ -31,6 +31,8 @@ public class HubController {
     private Label lblWelcome;
     @FXML
     private Pane paneWelcome;
+    @FXML
+    private Pane paneVIP;
     //Welcome pane
     //Navigation buttons
     @FXML
@@ -80,6 +82,10 @@ public class HubController {
     //Post add
     //Post retrieve
     @FXML
+    private TextField txtPostID;
+    @FXML
+    private TextField txtNoPostsRetrieve;
+    @FXML
     private TableView<Post> table;
         @FXML private TableColumn<Post, Integer> colId;
         @FXML private TableColumn<Post, String> colContent;
@@ -87,10 +93,22 @@ public class HubController {
         @FXML private TableColumn<Post, Integer> colLikes;
         @FXML private TableColumn<Post, Integer> colShares;
         @FXML private TableColumn<Post, String> colDate_time;
-    public ObservableList<Post> listPost = FXCollections.observableArrayList();
+    @FXML
+    private Button btnRetrieveViaID;
+    @FXML
+    private Button btnRetrieveViaLikes;
+    @FXML
+    private Button btnRetrieveViaShares;
     //Post retrieve
+    //Post remove
+    @FXML
+    private Button btnRemovePost;
+    @FXML
+    private TextField txtRemovePostID;
+    //Post remove
 
     public void setCurrentUser(User user) {
+        this.currentUser = user;
         //puts stores user details into GUI
         lblFName.setText(user.getFirstname());
         lblLName.setText(user.getLastname());
@@ -99,28 +117,84 @@ public class HubController {
         //welcome message
         lblWelcome.setText("Welcome Back, " +
                 user.getFirstname() + "!");
-
-        setCellTable();
-        hubModel.loadDataFromDatabase();
-        System.out.println("yes");
-    }
-    private void setCellTable(){
-        colId.setCellValueFactory(new PropertyValueFactory<>("postID"));
-        colContent.setCellValueFactory(new PropertyValueFactory<>("content"));
-        colAuthor.setCellValueFactory(new PropertyValueFactory<>("author"));
-        colLikes.setCellValueFactory(new PropertyValueFactory<>("likes"));
-        colShares.setCellValueFactory(new PropertyValueFactory<>("shares"));
-        colDate_time.setCellValueFactory(new PropertyValueFactory<>("date_time"));
-
+        if (user.isVIP()){
+            //Hide prompt to promote to VIP
+            paneVIP.setVisible(false);
+        }
     }
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Show welcome
         paneWelcome.setVisible(true);
         paneWelcome.requestFocus();
         //TODO if VIP show special functions
+        //Set columns
+        colId.setCellValueFactory(new PropertyValueFactory<Post, Integer>("postID"));
+        colContent.setCellValueFactory(new PropertyValueFactory<Post, String>("content"));
+        colAuthor.setCellValueFactory(new PropertyValueFactory<Post, String>("author"));
+        colLikes.setCellValueFactory(new PropertyValueFactory<Post, Integer>("likes"));
+        colShares.setCellValueFactory(new PropertyValueFactory<Post, Integer>("shares"));
+        colDate_time.setCellValueFactory(new PropertyValueFactory<Post, String>("date_time"));
+        //get posts and display
+        try {
+            table.setItems(hubModel.loadDataFromDatabase());
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
     @FXML
-    protected void onBtnAction(ActionEvent event) { //show/hide relevant panes on different button clicks
+    protected void onRetrieveBtnAction(ActionEvent event) throws SQLException {
+        //Each button will use the same method but with different overrides
+        if (event.getSource() == btnRetrieveViaID) { //get post by ID
+            if (!txtPostID.getText().isEmpty()){
+                int ID = Integer.parseInt(txtPostID.getText());
+                table.setItems(hubModel.loadDataFromDatabase(ID));
+                //clear other unused field
+                txtNoPostsRetrieve.clear();
+            } //else do nothing
+        } else if (event.getSource() == btnRetrieveViaLikes) { //sort by likes, N posts
+            if (!txtNoPostsRetrieve.getText().isEmpty()) {
+                int noPosts = Integer.parseInt(txtNoPostsRetrieve.getText());
+                table.setItems(hubModel.loadDataFromDatabase(noPosts, true));
+                //clear other unused field
+                txtPostID.clear();
+            } //else do nothing
+        } else if (event.getSource() == btnRetrieveViaShares) { //sort by shares, N posts
+            if (!txtNoPostsRetrieve.getText().isEmpty()) {
+                int noPosts = Integer.parseInt(txtNoPostsRetrieve.getText());
+                table.setItems(hubModel.loadDataFromDatabase(noPosts, false));
+                //clear other unused field
+                txtPostID.clear();
+            } //else do nothing
+        }
+    }
+    @FXML
+    protected void onBtnRemovePostAction(ActionEvent event){
+        if (!txtRemovePostID.getText().isEmpty()){
+            int ID = Integer.parseInt(txtRemovePostID.getText());
+            if (hubModel.doesIdExist(ID)){
+                if (hubModel.removePost(ID)){
+                    //updates posts table with removed post
+                    try {
+                        table.setItems(hubModel.loadDataFromDatabase());
+                    } catch (SQLException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    //success message
+                    JOptionPane.showMessageDialog(null,
+                            "Post removed successfully from collection!",
+                            "Success!", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        } else {
+            //warning message: empty input
+            JOptionPane.showMessageDialog(null,
+                    "Field cannot be empty!\n" +
+                            "Please try again!",
+                    "Input Empty!", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+    @FXML
+    protected void onMenuBtnAction(ActionEvent event) { //show/hide relevant panes on different button clicks
         //always hide welcome pane as it will not be accessed again
         paneWelcome.setVisible(false);
 
@@ -177,6 +251,26 @@ public class HubController {
                 }
             }
         });
+        //Retrieve post ID text field
+        txtPostID.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    txtPostID.setText(newValue.replaceAll("\\D", ""));
+                }
+            }
+        });
+        //Retrieve No. Posts to retrieve text field
+        txtNoPostsRetrieve.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    txtNoPostsRetrieve.setText(newValue.replaceAll("\\D", ""));
+                }
+            }
+        });
     }
     @FXML
     protected void onBtnAddAction(ActionEvent event) {
@@ -196,6 +290,7 @@ public class HubController {
                 int shares = Integer.parseInt(txtAddShares.getText());
                 String date_Time = lblPreviewDate.getText();
                 if (hubModel.doesIdExist(postID)){
+                    //TODO THIS
                     System.out.println("ID exists");
                 }
                 //create new post
@@ -212,8 +307,12 @@ public class HubController {
                                     "Please try again!",
                             "Post Error!", JOptionPane.WARNING_MESSAGE);
                 }
-            } catch (Exception ex) {
-                System.out.println(ex.getMessage());
+            } catch (Exception e) {
+                //warning message: empty input
+                JOptionPane.showMessageDialog(null,
+                        "Field cannot be empty!\n" +
+                                "Please try again!",
+                        "Input Empty!", JOptionPane.WARNING_MESSAGE);
             } finally {
                 //Clear input
                 txtAddPostID.clear();
@@ -226,6 +325,22 @@ public class HubController {
                 spinMinute.getValueFactory().setValue(0);
                 lblPreviewDate.setText("00/00/0000 00:00");
             }
+    }
+    @FXML
+    protected void onLnkVipPressed(ActionEvent event){
+        if (hubModel.setUserVIP(currentUser.getID())){
+            //Confirmation message
+            JOptionPane.showMessageDialog(null,
+                    "You are now a VIP member!\n" +
+                            "Please log out and back in for this to take affect.",
+                    "Success!", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            //warning message: sql error
+            JOptionPane.showMessageDialog(null,
+                    "Something went wrong updating you VIP status!\n" +
+                            "Please try again!",
+                    "Database error!", JOptionPane.WARNING_MESSAGE);
+        }
     }
     @FXML
     protected void onDateChanged(ActionEvent event){
