@@ -112,7 +112,7 @@ public class HubController implements Initializable{
         //puts stores user details into GUI
         lblFName.setText(user.getFirstname());
         lblLName.setText(user.getLastname());
-        lblID.setText(String.valueOf(user.getID()));
+        lblID.setText(String.valueOf(user.getUsername()));
         lblVIP.setText(String.valueOf(user.isVIP()));
         //welcome message
         lblWelcome.setText("Welcome Back, " +
@@ -328,7 +328,7 @@ public class HubController implements Initializable{
     }
     @FXML
     protected void onLnkVipPressed(ActionEvent event){
-        if (hubModel.setUserVIP(currentUser.getID())){
+        if (hubModel.setUserVIP(currentUser.getUsername())){
             //Confirmation message
             JOptionPane.showMessageDialog(null,
                     "You are now a VIP member!\n" +

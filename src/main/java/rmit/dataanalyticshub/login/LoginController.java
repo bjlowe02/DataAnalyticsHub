@@ -24,7 +24,7 @@ public class LoginController{
     @FXML
     private VBox paneLogin;
     @FXML
-    private TextField txtID;
+    private TextField txtUsername;
     @FXML
     private PasswordField txtPassword;
     @FXML
@@ -35,25 +35,25 @@ public class LoginController{
     @FXML
     protected void onBtnLoginAction(ActionEvent event){
         //handle empty input(s)
-        if (txtID.getText().isEmpty() || txtPassword.getText().isEmpty()){
+        if (txtUsername.getText().isEmpty() || txtPassword.getText().isEmpty()){
             //warning message
             JOptionPane.showMessageDialog(null,
                     "ID and/or Password cannot be empty!\n" +
                             "Please try again!",
                     "Bad Input!", JOptionPane.WARNING_MESSAGE);
             //clear input fields
-            txtID.clear();
+            txtUsername.clear();
             txtPassword.clear();
         } else { //good input will continue to check against db
             try {
-                if (loginModel.isLogin(txtID.getText(), txtPassword.getText())){
+                if (loginModel.isLogin(txtUsername.getText(), txtPassword.getText())){
                     //close current form
                     ((Node)event.getSource()).getScene().getWindow().hide();
                     //open next from with logged-in user
                     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("views/hub/Hub.fxml"));
                     Scene scene = new Scene(fxmlLoader.load(), 600, 425);
                     //get full user details
-                    User user = loginModel.getUserFromID(Integer.parseInt(txtID.getText()));
+                    User user = loginModel.getUserFromUsername(txtUsername.getText());
                     //store user details in controller
                     HubController hubController = (HubController)fxmlLoader.getController();
                     hubController.setCurrentUser(user);
@@ -70,7 +70,7 @@ public class LoginController{
                                     "Please try again!",
                             "Login Failed!", JOptionPane.INFORMATION_MESSAGE);
                     //clear input fields
-                    txtID.clear();
+                    txtUsername.clear();
                     txtPassword.clear();
                 }
             } catch (SQLException | IOException e) {

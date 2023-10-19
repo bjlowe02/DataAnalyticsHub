@@ -19,7 +19,7 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="txtID" focusTraversable="false" promptText="ID" />
+      <TextField fx:id="txtUsername" focusTraversable="false" promptText="Username" />
       <PasswordField fx:id="txtPassword" focusTraversable="false" promptText="Password" />
       <Hyperlink fx:id="lnkCreateAccount" focusTraversable="false" onAction="#onLinkClick" text="Don't have an account? Sign Up&#10;" textAlignment="CENTER" underline="true" />
       <Button fx:id="btnLogin" focusTraversable="false" onAction="#onBtnLoginAction" text="Login" />

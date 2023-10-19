@@ -1,20 +1,21 @@
 package rmit.dataanalyticshub;
 
 public class User {
-    private int ID;
+    private String username;
     private String firstname;
     private String lastname;
     private String password;
     private boolean VIP;
 
-    public User(String firstName, String lastname, String password){
+    public User(String username, String firstName, String lastname, String password){
+        this.username = username;
         this.firstname = firstName;
         this.lastname = lastname;
         this.password = password;
         this.VIP = false;
     }
-    public User(int ID, String firstName, String lastName, Boolean VIP) {
-        this.ID = ID;
+    public User(String username, String firstName, String lastName, Boolean VIP) {
+        this.username = username;
         this.firstname = firstName;
         this.lastname = lastName;
         this.VIP = VIP;
@@ -31,8 +32,8 @@ public class User {
         return password;
     }
 
-    public int getID() {
-        return ID;
+    public String getUsername() {
+        return username;
     }
 
     public boolean isVIP() {

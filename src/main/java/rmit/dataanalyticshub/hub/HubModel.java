@@ -145,12 +145,12 @@ public class HubModel {
         return false;
     }
 
-    public boolean setUserVIP(int ID) {
+    public boolean setUserVIP(String username) {
         try (Connection conn = SqliteConnection.Connector();
              Statement stmt = conn.createStatement();) {
             String sql = "UPDATE users" +
                     " SET VIP = 1" +
-                    " WHERE ID = " + ID;
+                    " WHERE username = " + username;
 
             int result = stmt.executeUpdate(sql);
             if (result == 1){
