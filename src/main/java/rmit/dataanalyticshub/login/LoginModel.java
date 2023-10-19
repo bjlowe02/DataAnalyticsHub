@@ -13,15 +13,15 @@ public class LoginModel {
         if (connection == null) System.exit(1);
     }
 
-    public boolean isLogin(String ID, String password) throws SQLException {
+    public boolean isLogin(String username, String password) throws SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         String query = "SELECT * " +
                 "FROM users " +
-                "WHERE ID = ? and Password = ?";
+                "WHERE username = ? and Password = ?";
         try {
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, ID);
+            preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
 
             resultSet = preparedStatement.executeQuery();
@@ -35,15 +35,15 @@ public class LoginModel {
         }
     }
 
-    public User getUserFromID(int ID) throws SQLException {
+    public User getUserFromUsername(String username) throws SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         String query = "SELECT * " +
                 "FROM users " +
-                "WHERE ID = ?";
+                "WHERE username = ?";
         try {
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, String.valueOf(ID));
+            preparedStatement.setString(1, username);
 
             resultSet = preparedStatement.executeQuery();
 
@@ -56,7 +56,7 @@ public class LoginModel {
                 lastName = resultSet.getString("lastName");
                 VIP = resultSet.getBoolean("VIP");
             }
-            return new User(ID, firstName, lastName, VIP);
+            return new User(username, firstName, lastName, VIP);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {

@@ -23,6 +23,8 @@ public class CreateAccountController {
     @FXML
     private TextField txtLName;
     @FXML
+    private TextField txtUsername;
+    @FXML
     private PasswordField txtPassword;
     @FXML
     private PasswordField txtRepeatPassword;
@@ -35,6 +37,7 @@ public class CreateAccountController {
     protected void onBtnCreateAccountAction(ActionEvent event) {
         if (!txtFName.getText().isEmpty() ||
                 !txtLName.getText().isEmpty() ||
+                !txtUsername.getText().isEmpty() ||
                 !txtPassword.getText().isEmpty() ||
                 !txtRepeatPassword.getText().isEmpty()){
 
@@ -42,21 +45,22 @@ public class CreateAccountController {
                 //Gather input
                 String firstname = txtFName.getText();
                 String lastname = txtLName.getText();
+                String username = txtUsername.getText();
                 String password = txtPassword.getText();
                 //New user is created without ID and will be added via auto-increment in db
-                User newAcc = new User(firstname,lastname,password);
+                User newAcc = new User(username,firstname,lastname,password);
                 //add user to sqlite
                 try {
-                    if (model.insertUser(newAcc)){
-                        //Display new login details
-                        //Gets ID from db auto-increment and password which is inputted earlier
-                        JOptionPane.showMessageDialog(null,
-                                "Account created!\n" +
-                                        "Please store this details to log-in.\n" +
-                                        "ID: " + model.getLastInsertedID() + "\n" +
-                                        "Password: " + password,
-                                "Success!", JOptionPane.PLAIN_MESSAGE);
-                        //Open last form
+                    if (!model.doesUsernameExist(username)) { //if username doesn't already exist
+                        if (model.insertUser(newAcc)){
+                            //Display new login details
+                            JOptionPane.showMessageDialog(null,
+                                    "Account created!\n" +
+                                            "Please store this details to log-in.\n" +
+                                            "Username: " + username + "\n" +
+                                            "Password: " + password,
+                                    "Success!", JOptionPane.PLAIN_MESSAGE);
+                            //Open last form
                             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("views/login/Login.fxml"));
                             Scene scene = new Scene(fxmlLoader.load(), 320, 240);
                             Stage stage = new Stage();
@@ -64,14 +68,21 @@ public class CreateAccountController {
                             stage.setTitle("Data Analytics Hub | Login");
                             stage.setScene(scene);
                             stage.show();
-                        //close current form
-                        ((Node)event.getSource()).getScene().getWindow().hide();
+                            //close current form
+                            ((Node)event.getSource()).getScene().getWindow().hide();
+                        } else {
+                            //warning message: SQL insert error
+                            JOptionPane.showMessageDialog(null,
+                                    "There was an issue adding new account to database!\n" +
+                                            "Please try again!",
+                                    "Account Error!", JOptionPane.WARNING_MESSAGE);
+                        }
                     } else {
-                        //warning message: SQL insert error
+                        //warning message: username already exists in collection
                         JOptionPane.showMessageDialog(null,
-                                "There was an issue adding new account to database!\n" +
+                                "The username (" + username + ") already exists!\n" +
                                         "Please try again!",
-                                "Account Error!", JOptionPane.WARNING_MESSAGE);
+                                "Username Error!", JOptionPane.WARNING_MESSAGE);
                     }
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());

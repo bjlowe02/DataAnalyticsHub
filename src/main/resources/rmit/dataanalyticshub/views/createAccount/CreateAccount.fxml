@@ -20,6 +20,7 @@
       </Label>
       <TextField fx:id="txtFName" focusTraversable="false" promptText="First Name:" />
       <TextField fx:id="txtLName" focusTraversable="false" promptText="Last Name:" />
+      <TextField fx:id="txtUsername" focusTraversable="false" promptText="Username:" />
       <PasswordField fx:id="txtPassword" focusTraversable="false" promptText="Password:" />
       <PasswordField fx:id="txtRepeatPassword" focusTraversable="false" promptText="Repeat Password:" />
       <Button fx:id="btnCreateAccount" focusTraversable="false" onAction="#onBtnCreateAccountAction" text="Create Account" />
