@@ -6,19 +6,32 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import rmit.dataanalyticshub.Post;
 import rmit.dataanalyticshub.User;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.lang.reflect.Field;
+import java.nio.file.Files;
 
 import javax.swing.*;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class HubController implements Initializable{
@@ -106,6 +119,10 @@ public class HubController implements Initializable{
     @FXML
     private TextField txtRemovePostID;
     //Post remove
+    //Post export
+    @FXML
+    private TextField txtExportPostID;
+    //Post export
 
     public void setCurrentUser(User user) {
         this.currentUser = user;
@@ -194,6 +211,84 @@ public class HubController implements Initializable{
         }
     }
     @FXML
+    protected void onBtnExportPostAction(ActionEvent event){
+        if (!txtExportPostID.getText().isEmpty()){
+            int ID = Integer.parseInt(txtExportPostID.getText());
+            if (hubModel.doesIdExist(ID)){
+                try {
+                    String content = convertToCSV(hubModel.getPost(
+                            Integer.parseInt(txtExportPostID.getText())));
+                    System.out.println(content);
+
+                    FileChooser fileChooser = new FileChooser();
+                    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV (Comma delimited)", "*.csv"));
+
+                    File file = fileChooser.showSaveDialog(new Stage());
+                    if (!file.getName().contains(".")) {
+                        file = new File(file.getAbsolutePath() + ".txt");
+                    }
+                    saveFile(file, content);
+
+                    //success message
+                    JOptionPane.showMessageDialog(null,
+                            "Post has been successfully Exported!",
+                            "Success!", JOptionPane.INFORMATION_MESSAGE);
+                    //clear input
+                    txtExportPostID.clear();
+                } catch (Exception e){
+                    System.out.println(e.getMessage());
+                    //warning message: Export failed
+                    JOptionPane.showMessageDialog(null,
+                            "The post could not be exported!\n" +
+                                    "Please try again!",
+                            "Export failure!", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        } else {
+            //warning message: empty input
+            JOptionPane.showMessageDialog(null,
+                    "Field cannot be empty!\n" +
+                            "Please try again!",
+                    "Input Empty!", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+    private void saveFile(File file, String content){
+        try {
+            PrintWriter printWriter = new PrintWriter(file);
+            printWriter.write(content);
+            printWriter.close();
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    private static String convertToCSV(Object object) {
+        Class<?> clazz = object.getClass();
+        Field[] fields = clazz.getDeclaredFields();
+        List<Field> fieldList = Arrays.asList(fields);
+
+        StringBuilder csvData = new StringBuilder();
+
+        // Append headers
+        fieldList.forEach(field -> csvData.append(field.getName()).append(","));
+
+        csvData.deleteCharAt(csvData.length() - 1);
+        csvData.append("\n");
+
+        // Append values
+        fieldList.forEach(field -> {
+            field.setAccessible(true);
+            try {
+                csvData.append(field.get(object)).append(",");
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
+
+        csvData.deleteCharAt(csvData.length() - 1);
+
+        return csvData.toString();
+    }
+    @FXML
     protected void onMenuBtnAction(ActionEvent event) { //show/hide relevant panes on different button clicks
         //always hide welcome pane as it will not be accessed again
         paneWelcome.setVisible(false);
@@ -222,53 +317,45 @@ public class HubController implements Initializable{
     protected void onKeyPressed(KeyEvent event) {
         // force the field to be numeric only
         //ID text field
-        txtAddPostID.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    txtAddPostID.setText(newValue.replaceAll("\\D", ""));
-                }
+        txtAddPostID.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                txtAddPostID.setText(newValue.replaceAll("\\D", ""));
             }
         });
         //No. of likes text field
-        txtAddLikes.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    txtAddLikes.setText(newValue.replaceAll("\\D", ""));
-                }
+        txtAddLikes.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                txtAddLikes.setText(newValue.replaceAll("\\D", ""));
             }
         });
         //No. of shares text field
-        txtAddShares.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    txtAddShares.setText(newValue.replaceAll("\\D", ""));
-                }
+        txtAddShares.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                txtAddShares.setText(newValue.replaceAll("\\D", ""));
             }
         });
         //Retrieve post ID text field
-        txtPostID.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    txtPostID.setText(newValue.replaceAll("\\D", ""));
-                }
+        txtPostID.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                txtPostID.setText(newValue.replaceAll("\\D", ""));
             }
         });
         //Retrieve No. Posts to retrieve text field
-        txtNoPostsRetrieve.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    txtNoPostsRetrieve.setText(newValue.replaceAll("\\D", ""));
-                }
+        txtNoPostsRetrieve.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                txtNoPostsRetrieve.setText(newValue.replaceAll("\\D", ""));
+            }
+        });
+        //Remove post via ID text field
+        txtRemovePostID.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                txtRemovePostID.setText(newValue.replaceAll("\\D", ""));
+            }
+        });
+        //Remove post via ID text field
+        txtExportPostID.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                txtExportPostID.setText(newValue.replaceAll("\\D", ""));
             }
         });
     }

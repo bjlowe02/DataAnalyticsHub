@@ -145,14 +145,40 @@ public class HubModel {
         return false;
     }
 
-    public boolean setUserVIP(String username) {
+    public Post getPost(int ID){
+        //Prepare SQL query
+        String query = "SELECT * " +
+                "FROM posts " +
+                "WHERE postID = " + ID;
         try (Connection conn = SqliteConnection.Connector();
              Statement stmt = conn.createStatement();) {
-            String sql = "UPDATE users" +
-                    " SET VIP = 1" +
-                    " WHERE username = " + username;
 
-            int result = stmt.executeUpdate(sql);
+            ResultSet resultSet = stmt.executeQuery(query);
+            while (resultSet.next()){
+                String content = resultSet.getString(2);
+                String author = resultSet.getString(3);
+                int likes = resultSet.getInt(4);
+                int shares = resultSet.getInt(5);
+                String date_time = resultSet.getString(6);
+                //return post
+                return new Post(ID,content,author,likes,shares,date_time);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public boolean setUserVIP(String username) {
+        //Prepare SQL query
+        String sql = "UPDATE users" +
+                " SET VIP = 1" +
+                " WHERE username = ?";
+        try (Connection conn = SqliteConnection.Connector();
+             PreparedStatement preparedStatement = conn.prepareStatement(sql);) {
+
+            preparedStatement.setString(1, username);
+            int result = preparedStatement.executeUpdate();
             if (result == 1){
                 return true;
             }
