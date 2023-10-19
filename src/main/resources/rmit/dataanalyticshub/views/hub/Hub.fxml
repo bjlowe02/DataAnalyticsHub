@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Hyperlink?>
@@ -209,7 +210,7 @@
                                           </Button>
                                        </children>
                                        <padding>
-                                          <Insets left="10.0" top="15.0" />
+                                          <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                        </padding>
                                     </FlowPane>
                                  </content>
@@ -315,7 +316,7 @@
                                           </GridPane>
                                        </top>
                                        <padding>
-                                          <Insets right="5.0" />
+                                          <Insets bottom="5.0" left="5.0" right="5.0" />
                                        </padding>
                                     </BorderPane>
                                  </content>
@@ -368,6 +369,25 @@
                                           <Insets left="20.0" top="20.0" />
                                        </padding>
                                     </FlowPane>
+                                 </content>
+                              </Tab>
+                              <Tab fx:id="visualiseData" text="Visualise Data">
+                                 <content>
+                                    <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                       <top>
+                                          <Label prefHeight="46.0" prefWidth="451.0" text="Pie chart displaying the distribution of Shares" textFill="#52438f" BorderPane.alignment="CENTER">
+                                             <font>
+                                                <Font name="Georgia Bold Italic" size="18.0" />
+                                             </font>
+                                          </Label>
+                                       </top>
+                                       <padding>
+                                          <Insets bottom="20.0" left="20.0" right="20.0" />
+                                       </padding>
+                                       <center>
+                                          <PieChart BorderPane.alignment="CENTER" />
+                                       </center>
+                                    </BorderPane>
                                  </content>
                               </Tab>
                           </tabs>

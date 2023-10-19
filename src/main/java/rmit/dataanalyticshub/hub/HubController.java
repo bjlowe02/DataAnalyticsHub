@@ -107,6 +107,12 @@ public class HubController implements Initializable{
     @FXML
     private TextField txtExportPostID;
     //Post export
+    //Post import
+    //Post import
+    //Visualise data
+    @FXML
+    private Tab visualiseData;
+    //Visualise data
 
     public void setCurrentUser(User user) {
         this.currentUser = user;
@@ -121,13 +127,15 @@ public class HubController implements Initializable{
         if (user.isVIP()){
             //Hide prompt to promote to VIP
             paneVIP.setVisible(false);
+        } else {
+            //disable VIP functions
+            visualiseData.setDisable(true);
         }
     }
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Show welcome
         paneWelcome.setVisible(true);
         paneWelcome.requestFocus();
-        //TODO if VIP show special functions
         //Set columns
         colId.setCellValueFactory(new PropertyValueFactory<Post, Integer>("postID"));
         colContent.setCellValueFactory(new PropertyValueFactory<Post, String>("content"));
@@ -200,9 +208,9 @@ public class HubController implements Initializable{
             int ID = Integer.parseInt(txtExportPostID.getText());
             if (hubModel.doesIdExist(ID)){
                 try {
+                    //get post
                     String content = convertToCSV(hubModel.getPost(
                             Integer.parseInt(txtExportPostID.getText())));
-                    System.out.println(content);
 
                     FileChooser fileChooser = new FileChooser();
                     fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV (Comma delimited)", "*.csv"));
@@ -227,6 +235,12 @@ public class HubController implements Initializable{
                                     "Please try again!",
                             "Export failure!", JOptionPane.WARNING_MESSAGE);
                 }
+            } else {
+                //warning message: ID doesn't exist
+                JOptionPane.showMessageDialog(null,
+                        "This post ID does not exist!\n" +
+                                "Please try again with a valid ID!",
+                        "Invalid ID!", JOptionPane.WARNING_MESSAGE);
             }
         } else {
             //warning message: empty input
@@ -360,24 +374,29 @@ public class HubController implements Initializable{
                 int likes = Integer.parseInt(txtAddLikes.getText());
                 int shares = Integer.parseInt(txtAddShares.getText());
                 String date_Time = lblPreviewDate.getText();
-                if (hubModel.doesIdExist(postID)){
-                    //TODO THIS
-                    System.out.println("ID exists");
-                }
-                //create new post
-                Post post = new Post(postID,content,author,likes,shares,date_Time);
-                if (hubModel.insertPost(post)){
-                    //Confirmation message
-                    JOptionPane.showMessageDialog(null,
-                            "Post successfully added to the database!",
-                            "Post success!", JOptionPane.PLAIN_MESSAGE);
+                if (!hubModel.doesIdExist(postID)){
+                    //create new post
+                    Post post = new Post(postID,content,author,likes,shares,date_Time);
+                    if (hubModel.insertPost(post)){
+                        //Confirmation message
+                        JOptionPane.showMessageDialog(null,
+                                "Post successfully added to the database!",
+                                "Post success!", JOptionPane.PLAIN_MESSAGE);
+                    } else {
+                        //warning message: SQL insert error
+                        JOptionPane.showMessageDialog(null,
+                                "There was an issue adding new post to database!\n" +
+                                        "Please try again!",
+                                "Post Error!", JOptionPane.WARNING_MESSAGE);
+                        }
                 } else {
-                    //warning message: SQL insert error
+                    //warning message: ID already exists
                     JOptionPane.showMessageDialog(null,
-                            "There was an issue adding new post to database!\n" +
-                                    "Please try again!",
+                            "A post with this ID already exists in the collection!\n" +
+                                    "Please try again with a different ID!",
                             "Post Error!", JOptionPane.WARNING_MESSAGE);
                 }
+
             } catch (Exception e) {
                 //warning message: empty input
                 JOptionPane.showMessageDialog(null,
