@@ -1,38 +1,22 @@
 package rmit.dataanalyticshub.hub;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
+import rmit.dataanalyticshub.*;
+import javafx.event.*;
+import javafx.fxml.*;
+import java.util.*;
+import javafx.stage.*;
+import java.io.*;
+import javax.swing.*;
 import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.stage.Window;
-import rmit.dataanalyticshub.Post;
-import rmit.dataanalyticshub.User;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.lang.reflect.Field;
-import java.nio.file.Files;
-
-import javax.swing.*;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
+
 
 public class HubController implements Initializable{
     public HubModel hubModel = new HubModel();
