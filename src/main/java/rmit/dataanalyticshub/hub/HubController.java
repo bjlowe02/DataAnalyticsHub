@@ -216,15 +216,16 @@ public class HubController implements Initializable{
                     fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV (Comma delimited)", "*.csv"));
 
                     File file = fileChooser.showSaveDialog(new Stage());
-                    if (!file.getName().contains(".")) {
-                        file = new File(file.getAbsolutePath() + ".txt");
+                    if  (file != null) {
+                        if (!file.getName().contains(".")) {
+                            file = new File(file.getAbsolutePath() + ".txt");
+                        }
+                        saveFile(file, content);
+                        //success message
+                        JOptionPane.showMessageDialog(null,
+                                "Post has been successfully Exported!",
+                                "Success!", JOptionPane.INFORMATION_MESSAGE);
                     }
-                    saveFile(file, content);
-
-                    //success message
-                    JOptionPane.showMessageDialog(null,
-                            "Post has been successfully Exported!",
-                            "Success!", JOptionPane.INFORMATION_MESSAGE);
                     //clear input
                     txtExportPostID.clear();
                 } catch (Exception e){
