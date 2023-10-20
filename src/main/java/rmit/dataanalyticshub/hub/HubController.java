@@ -354,7 +354,16 @@ public class HubController implements Initializable{
                 new PieChart.Data("Shares: 0-99", distShares[0]),
                 new PieChart.Data("Shares: 100-199", distShares[1]),
                 new PieChart.Data("Shares: 1000+", distShares[2]));
+        piechart.getData().clear();
         piechart.getData().addAll(pieChartData);
+    }
+    private void updateTable(){
+        //get posts and display
+        try {
+            table.setItems(hubModel.loadDataFromDatabase());
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
     @FXML
     protected void onMenuBtnAction(ActionEvent event) { //show/hide relevant panes on different button clicks
@@ -496,12 +505,18 @@ public class HubController implements Initializable{
     @FXML
     protected void onBtnAddAction(ActionEvent event) {
         //Check fields are not empty
-        if (!txtAddPostID.getText().isEmpty() ||
-                !txtAddContent.getText().isEmpty() ||
-                !txtAddAuthor.getText().isEmpty() ||
-                !txtAddLikes.getText().isEmpty() ||
-                !txtAddShares.getText().isEmpty() ||
-                !datePicker.getValue().toString().isEmpty()) {
+        if (txtAddPostID.getText().isEmpty() ||
+                txtAddContent.getText().isEmpty() ||
+                txtAddAuthor.getText().isEmpty() ||
+                txtAddLikes.getText().isEmpty() ||
+                txtAddShares.getText().isEmpty() ||
+                datePicker.getValue().toString().isEmpty()) {
+            //warning message: empty input
+            JOptionPane.showMessageDialog(null,
+                    "Field cannot be empty!\n" +
+                            "Please try again!",
+                    "Input Empty!", JOptionPane.WARNING_MESSAGE);
+        } else {
             try {
                 int postID = Integer.parseInt(txtAddPostID.getText());
                 String content = txtAddContent.getText();
@@ -519,6 +534,9 @@ public class HubController implements Initializable{
                                 "Post success!", JOptionPane.PLAIN_MESSAGE);
                         //update shares and display as pie chart
                         setPiechart();
+                        //updates posts table with new post
+                        updateTable();
+
                     } else {
                         //warning message: SQL insert error
                         JOptionPane.showMessageDialog(null,
@@ -545,12 +563,6 @@ public class HubController implements Initializable{
                 spinMinute.getValueFactory().setValue(0);
                 lblPreviewDate.setText("00/00/0000 00:00");
             }
-        } else {
-            //warning message: empty input
-            JOptionPane.showMessageDialog(null,
-                    "Field cannot be empty!\n" +
-                            "Please try again!",
-                    "Input Empty!", JOptionPane.WARNING_MESSAGE);
         }
     }
     @FXML
