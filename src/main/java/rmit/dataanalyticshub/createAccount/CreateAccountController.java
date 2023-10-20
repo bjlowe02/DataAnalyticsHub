@@ -109,4 +109,27 @@ public class CreateAccountController {
                     "Empty Field(s)!", JOptionPane.WARNING_MESSAGE);
         }
     }
+    @FXML
+    protected void onBtnReturnAction(ActionEvent event){
+        //clear input fields
+        txtFName.clear();
+        txtLName.clear();
+        txtPassword.clear();
+        txtRepeatPassword.clear();
+        //Open last form
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("views/login/Login.fxml"));
+        Scene scene = null;
+        try {
+            scene = new Scene(fxmlLoader.load(), 320, 240);
+            Stage stage = new Stage();
+            stage.getIcons().add(new Image("file:src/main/resources/rmit/dataanalyticshub/images/icon.png"));
+            stage.setTitle("Data Analytics Hub | Login");
+            stage.setScene(scene);
+            stage.show();
+            //close current form
+            ((Node)event.getSource()).getScene().getWindow().hide();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }

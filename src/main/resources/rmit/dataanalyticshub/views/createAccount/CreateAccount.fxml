@@ -24,5 +24,6 @@
       <PasswordField fx:id="txtPassword" focusTraversable="false" promptText="Password:" />
       <PasswordField fx:id="txtRepeatPassword" focusTraversable="false" promptText="Repeat Password:" />
       <Button fx:id="btnCreateAccount" focusTraversable="false" onAction="#onBtnCreateAccountAction" text="Create Account" />
+      <Button focusTraversable="false" onAction="#onBtnReturnAction" text="Return" />
    </children>
 </VBox>

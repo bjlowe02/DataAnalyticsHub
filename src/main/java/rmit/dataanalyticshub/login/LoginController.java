@@ -78,14 +78,13 @@ public class LoginController{
             }
         }
     }
-
     @FXML
     protected void onLinkClick(ActionEvent event) throws IOException {
         //hide login form for later use
         ((Node)event.getSource()).getScene().getWindow().hide();
         //show create account form
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("views/createAccount/CreateAccount.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        Scene scene = new Scene(fxmlLoader.load(), 320, 300);
         Stage stage = new Stage();
         stage.getIcons().add(new Image(ICON));
         stage.setTitle("Data Analytics Hub | Create Account");

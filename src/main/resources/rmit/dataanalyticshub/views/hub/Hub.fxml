@@ -77,7 +77,7 @@
          <center>
             <AnchorPane prefHeight="863.0" prefWidth="1463.0" BorderPane.alignment="CENTER">
                <children>
-                  <BorderPane fx:id="paneProfile" prefHeight="385.0" prefWidth="501.0">
+                  <BorderPane fx:id="paneProfile" prefHeight="385.0" prefWidth="501.0" visible="false">
                      <top>
                         <Label prefHeight="75.0" prefWidth="500.0" text="Your Details" textFill="#52438f" BorderPane.alignment="CENTER">
                            <font>
@@ -166,7 +166,7 @@
                         </FlowPane>
                      </left>
                   </BorderPane>
-                  <BorderPane fx:id="paneEditProfile" prefHeight="385.0" prefWidth="501.0">
+                  <BorderPane fx:id="paneEditProfile" prefHeight="385.0" prefWidth="501.0" visible="false">
                      <top>
                         <Label prefHeight="75.0" prefWidth="500.0" text="Your Details" textFill="#52438f" BorderPane.alignment="CENTER">
                            <font>
