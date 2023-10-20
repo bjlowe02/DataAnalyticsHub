@@ -20,6 +20,11 @@ public class User {
         this.lastname = lastName;
         this.VIP = VIP;
     }
+    public User(String username, String firstName, String lastName) {
+        this.username = username;
+        this.firstname = firstName;
+        this.lastname = lastName;
+    }
     public String getFirstname() {
         return firstname;
     }

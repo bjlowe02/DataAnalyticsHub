@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import rmit.dataanalyticshub.Post;
 import rmit.dataanalyticshub.SqliteConnection;
+import rmit.dataanalyticshub.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -47,6 +48,70 @@ public class HubModel {
             System.out.println(e.getMessage());
         }
         return false;
+    }
+    public boolean doesUsernameExist(String username) {
+        //Prepare SQL query
+        String query = "SELECT username " +
+                "FROM users " +
+                "WHERE username = ?";
+        try (Connection conn = SqliteConnection.Connector();
+             PreparedStatement preparedStatement = conn.prepareStatement(query);) {
+
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+    public void updateUserDetails(User user, String username) {
+        //Prepare SQL query
+        String sql = "UPDATE users" +
+                    " SET username = ?," +
+                    " firstname = ?," +
+                    " lastname = ?" +
+                    " WHERE username = ?";
+        try (Connection conn = SqliteConnection.Connector();
+             PreparedStatement preparedStatement = conn.prepareStatement(sql);) {
+
+            preparedStatement.setString(1, user.getUsername());
+            preparedStatement.setString(2, user.getFirstname());
+            preparedStatement.setString(3, user.getLastname());
+            preparedStatement.setString(4, username);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    public int[] getShareDistribution(){
+        int count1 = 0; //0-99
+        int count2 = 0; //100-199
+        int count3 = 0; //1000+
+
+        //prepare sql query
+        String query = "SELECT shares " +
+                "FROM posts ";
+        try (Connection conn = SqliteConnection.Connector();
+        Statement stmt = conn.createStatement()){
+
+            ResultSet resultSet = stmt.executeQuery(query);
+            while (resultSet.next()){
+                int share = resultSet.getInt("shares");
+                if (share >= 0 && share <= 100)
+                    count1++;
+                else if (share >= 100 && share <= 199)
+                    count2++;
+                else if (share >= 1000)
+                    count3++;
+            }
+            return new int[]{count1,count2,count3};
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 
     public ObservableList<Post> loadDataFromDatabase() throws SQLException {

@@ -13,6 +13,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -112,6 +113,9 @@
                                  <FlowPane.margin>
                                     <Insets bottom="5.0" />
                                  </FlowPane.margin>
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
                               </Label>
                               <Label text="First Name:">
                                  <font>
@@ -125,6 +129,9 @@
                                  <FlowPane.margin>
                                     <Insets bottom="5.0" />
                                  </FlowPane.margin>
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
                               </Label>
                               <Label text="Last Name:">
                                  <font>
@@ -138,6 +145,9 @@
                                  <FlowPane.margin>
                                     <Insets bottom="5.0" />
                                  </FlowPane.margin>
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
                               </Label>
                               <Label text="VIP Privileges:">
                                  <font>
@@ -148,6 +158,9 @@
                                  <font>
                                     <Font size="14.0" />
                                  </font>
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
                               </Label>
                            </children>
                         </FlowPane>
@@ -164,16 +177,6 @@
                      <padding>
                         <Insets left="15.0" />
                      </padding>
-                     <bottom>
-                        <Button fx:id="btnEditProfile1" mnemonicParsing="false" onAction="#onBtnEditProfileAction" prefHeight="40.0" prefWidth="140.0" stylesheets="@styleSheet.css" text="Edit Details" textFill="WHITE" BorderPane.alignment="CENTER_LEFT">
-                           <font>
-                              <Font name="Georgia Bold Italic" size="12.0" />
-                           </font>
-                           <BorderPane.margin>
-                              <Insets bottom="15.0" />
-                           </BorderPane.margin>
-                        </Button>
-                     </bottom>
                      <left>
                         <FlowPane orientation="VERTICAL" prefHeight="200.0" prefWidth="485.0" rowValignment="TOP" BorderPane.alignment="CENTER">
                            <children>
@@ -182,19 +185,19 @@
                                     <Font name="Georgia Bold Italic" size="14.0" />
                                  </font>
                               </Label>
-                              <TextField />
+                              <TextField fx:id="txtUsername" />
                               <Label text="First Name:">
                                  <font>
                                     <Font name="Georgia Bold Italic" size="14.0" />
                                  </font>
                               </Label>
-                              <TextField />
+                              <TextField fx:id="txtFirstname" />
                               <Label text="Last Name:">
                                  <font>
                                     <Font name="Georgia Bold Italic" size="14.0" />
                                  </font>
                               </Label>
-                              <TextField />
+                              <TextField fx:id="txtLastname" />
                               <Label text="VIP Privileges:">
                                  <font>
                                     <Font name="Georgia Bold Italic" size="14.0" />
@@ -203,8 +206,27 @@
                            </children>
                         </FlowPane>
                      </left>
+                     <bottom>
+                        <FlowPane prefHeight="51.0" prefWidth="487.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#onBtnSaveDetails" prefHeight="40.0" prefWidth="140.0" stylesheets="@styleSheet.css" text="Save Details" textFill="WHITE">
+                                 <font>
+                                    <Font name="Georgia Bold Italic" size="12.0" />
+                                 </font>
+                                 <FlowPane.margin>
+                                    <Insets right="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onBtnCancelEdit" prefHeight="40.0" prefWidth="71.0" stylesheets="@styleSheet.css" text="Cancel" textFill="WHITE">
+                                 <font>
+                                    <Font name="Georgia Bold Italic" size="12.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </FlowPane>
+                     </bottom>
                   </BorderPane>
-                  <BorderPane fx:id="panePost" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <BorderPane fx:id="panePost" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <center>
                         <TabPane prefHeight="625.0" prefWidth="501.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
                           <tabs>
@@ -429,6 +451,36 @@
                                     </FlowPane>
                                  </content>
                               </Tab>
+                              <Tab fx:id="importPosts" disable="true" text="Import">
+                                 <content>
+                                    <FlowPane orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0">
+                                       <children>
+                                          <Label prefHeight="45.0" prefWidth="225.0" text="Import Post(s) via CSV" textFill="#52438f">
+                                             <font>
+                                                <Font name="Georgia Bold Italic" size="18.0" />
+                                             </font>
+                                          </Label>
+                                          <Button mnemonicParsing="false" onAction="#onBtnExportPostAction" prefHeight="40.0" prefWidth="181.0" stylesheets="@styleSheet.css" text="Select Post(s) to Import" textFill="WHITE">
+                                             <font>
+                                                <Font name="Georgia Bold Italic" size="12.0" />
+                                             </font>
+                                             <FlowPane.margin>
+                                                <Insets top="10.0" />
+                                             </FlowPane.margin>
+                                          </Button>
+                                          <TextArea editable="false" prefHeight="158.0" prefWidth="466.0" />
+                                          <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="140.0" stylesheets="@styleSheet.css" text="Add" textFill="WHITE">
+                                             <font>
+                                                <Font name="Georgia Bold Italic" size="12.0" />
+                                             </font>
+                                          </Button>
+                                       </children>
+                                       <padding>
+                                          <Insets left="20.0" top="20.0" />
+                                       </padding>
+                                    </FlowPane>
+                                 </content>
+                              </Tab>
                               <Tab fx:id="visualiseData" text="Visualise Data">
                                  <content>
                                     <BorderPane prefHeight="200.0" prefWidth="200.0">
@@ -443,7 +495,7 @@
                                           <Insets bottom="20.0" left="20.0" right="20.0" />
                                        </padding>
                                        <center>
-                                          <PieChart BorderPane.alignment="CENTER" />
+                                          <PieChart fx:id="piechart" title="Distribution of Shares" BorderPane.alignment="CENTER" />
                                        </center>
                                     </BorderPane>
                                  </content>

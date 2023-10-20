@@ -1,7 +1,11 @@
 package rmit.dataanalyticshub.hub;
 
+import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.image.Image;
 import rmit.dataanalyticshub.*;
 import javafx.event.*;
@@ -57,6 +61,12 @@ public class HubController implements Initializable{
     //Edit Profile
     @FXML
     private BorderPane paneEditProfile;
+    @FXML
+    private TextField txtUsername;
+    @FXML
+    private TextField txtFirstname;
+    @FXML
+    private TextField txtLastname;
     //Edit Profile
     //Post add
     @FXML
@@ -113,10 +123,13 @@ public class HubController implements Initializable{
     private TextField txtExportPostID;
     //Post export
     //Post import
+    @FXML Tab importPosts;
     //Post import
     //Visualise data
     @FXML
     private Tab visualiseData;
+    @FXML
+    private PieChart piechart;
     //Visualise data
 
     public void setCurrentUser(User user) {
@@ -135,6 +148,7 @@ public class HubController implements Initializable{
         } else {
             //disable VIP functions
             visualiseData.setDisable(true);
+            importPosts.setDisable(true);
         }
     }
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -154,6 +168,8 @@ public class HubController implements Initializable{
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        //get shares and display as pie chart
+        setPiechart();
     }
     @FXML
     protected void onRetrieveBtnAction(ActionEvent event) throws SQLException {
@@ -190,6 +206,8 @@ public class HubController implements Initializable{
                     //updates posts table with removed post
                     try {
                         table.setItems(hubModel.loadDataFromDatabase());
+                        //update shares and display as pie chart
+                        setPiechart();
                     } catch (SQLException e) {
                         System.out.println(e.getMessage());
                     }
@@ -292,6 +310,15 @@ public class HubController implements Initializable{
 
         return csvData.toString();
     }
+    private void setPiechart(){
+        //get shares and display as pie chart
+        int[] distShares = hubModel.getShareDistribution();
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+                new PieChart.Data("Shares: 0-99", distShares[0]),
+                new PieChart.Data("Shares: 100-199", distShares[1]),
+                new PieChart.Data("Shares: 1000+", distShares[2]));
+        piechart.getData().addAll(pieChartData);
+    }
     @FXML
     protected void onMenuBtnAction(ActionEvent event) { //show/hide relevant panes on different button clicks
         //always hide welcome pane as it will not be accessed again
@@ -300,6 +327,7 @@ public class HubController implements Initializable{
         if (event.getSource() == btnProfile) {   //on Profile click
             //show/hide panes
             panePost.setVisible(false);
+            paneEditProfile.setVisible(false);
             paneProfile.setVisible(true);
             //set button effect
             btnProfile.setStyle("-fx-background-color: white;" +
@@ -332,6 +360,55 @@ public class HubController implements Initializable{
         stage.show();
         //close current form
         ((Node)event.getSource()).getScene().getWindow().hide();
+    }
+    @FXML
+    protected void onBtnEditProfileAction(ActionEvent event) {
+        paneEditProfile.setVisible(true);
+    }
+    @FXML
+    protected void onBtnSaveDetails(ActionEvent event){
+        if (!txtUsername.getText().isEmpty() ||
+                !txtFirstname.getText().isEmpty() ||
+                !txtLastname.getText().isEmpty()) {
+            String username = txtUsername.getText();
+            if (!hubModel.doesUsernameExist(username)){
+                //update user
+                hubModel.updateUserDetails(new User(txtUsername.getText(),
+                                txtFirstname.getText(),
+                                txtLastname.getText()),
+                        lblUsername.getText());
+                //clear fields and hide
+                clearEditUser();
+                //confirmation message: user updated
+                JOptionPane.showMessageDialog(null,
+                        "User details have successfully been updated!",
+                        "Success!", JOptionPane.PLAIN_MESSAGE);
+            } else {
+                //warning message: username already exists
+                JOptionPane.showMessageDialog(null,
+                        "The username (" + username + ") already taken!\n" +
+                                "Please try again with a different username!",
+                        "Username taken!", JOptionPane.WARNING_MESSAGE);
+            }
+        } else {
+            //warning message: empty fields
+            JOptionPane.showMessageDialog(null,
+                    "Fields cannot be empty!\n" +
+                            "Please try again!",
+                    "Username taken!", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+    @FXML
+    protected void onBtnCancelEdit(ActionEvent event){
+        clearEditUser();
+    }
+    private void clearEditUser(){
+        //clear fields
+        txtUsername.clear();
+        txtFirstname.clear();
+        txtLastname.clear();
+        //hide edit details
+        paneEditProfile.setVisible(false);
     }
     @FXML
     protected void onKeyPressed(KeyEvent event) {
@@ -404,6 +481,8 @@ public class HubController implements Initializable{
                         JOptionPane.showMessageDialog(null,
                                 "Post successfully added to the database!",
                                 "Post success!", JOptionPane.PLAIN_MESSAGE);
+                        //update shares and display as pie chart
+                        setPiechart();
                     } else {
                         //warning message: SQL insert error
                         JOptionPane.showMessageDialog(null,
@@ -474,10 +553,5 @@ public class HubController implements Initializable{
         String date_time = DTF.format(date) + " " +
                 hour + ":" + minute;
         lblPreviewDate.setText(date_time);
-    }
-    @FXML
-    protected void onBtnEditProfileAction(ActionEvent event) {
-        //TODO allow user to edit profile details
-        paneEditProfile.setVisible(true);
     }
 }
