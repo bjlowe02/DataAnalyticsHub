@@ -23,6 +23,8 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class HubController implements Initializable{
@@ -123,7 +125,10 @@ public class HubController implements Initializable{
     private TextField txtExportPostID;
     //Post export
     //Post import
-    @FXML Tab importPosts;
+    @FXML
+    private Tab importPosts;
+    @FXML
+    private TextArea textArea;
     //Post import
     //Visualise data
     @FXML
@@ -223,6 +228,38 @@ public class HubController implements Initializable{
                     "Field cannot be empty!\n" +
                             "Please try again!",
                     "Input Empty!", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+    @FXML
+    protected void onBtnImportPostAction(ActionEvent event){
+        textArea.clear();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV (Comma delimited)", "*.csv"));
+        File file = fileChooser.showOpenDialog(new Stage());
+        //Regex = any digit(s), any character(s), any character(s), any digit(s), any digit(s), 00/00/0000 00:00
+        String regex = "(^\\d+),([^,]+),([^,]+),(\\d+),(\\d+),(\\d{2}\\/\\d{2}\\/\\d{4} \\d{2}:\\d{2}$)";
+        if (file != null){
+            try {
+                Scanner scn = new Scanner(file);
+                while (scn.hasNextLine()){
+                    String line = scn.nextLine();
+                    //Checks each line to match regex otherwise discards line and carries on
+                    //This is useful in case column headers are included in the SQL such as the one's in this program's
+                    //export post function.
+                    if (line.matches(regex)) {
+                        textArea.appendText(line + "\n");
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            if (textArea.getText().isEmpty()){ //if no text was retrieved when filtering through regex
+                //warning message: sql not found
+                JOptionPane.showMessageDialog(null,
+                        "Expected CSV pattern was not found in the file " + file + "!\n" +
+                                "Please try again with a valid file!",
+                        "Export failure!", JOptionPane.WARNING_MESSAGE);
+            }
         }
     }
     @FXML
@@ -465,7 +502,6 @@ public class HubController implements Initializable{
                 !txtAddLikes.getText().isEmpty() ||
                 !txtAddShares.getText().isEmpty() ||
                 !datePicker.getValue().toString().isEmpty())
-
             try {
                 int postID = Integer.parseInt(txtAddPostID.getText());
                 String content = txtAddContent.getText();
