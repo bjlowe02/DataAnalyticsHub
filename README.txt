@@ -8,5 +8,6 @@ REFERENCES
     1. GitHub. Hello World. GitHub Docs. Published 2023. https://docs.github.com/en/get-started/quickstart/hello-world
     2. GitHub Tutorial - Beginner’s Training Guide. www.youtube.com. https://www.youtube.com/watch?v=iv8rSLsi1xo
     3. ProgrammingKnowledge - YouTube. www.youtube.com. https://www.youtube.com/@ProgrammingKnowledge
+    4. Random Code - YouTube. www.youtube.com. https://www.youtube.com/@Randomcode_0
     IMAGES
     1. Alexis JD. Analysis, analytics, data icon - Download on Iconfinder. Iconfinder. Accessed September 22, 2023. https://www.iconfinder.com/icons/2124723/analysis_analytics_data_icon
