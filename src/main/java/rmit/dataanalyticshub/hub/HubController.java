@@ -501,7 +501,7 @@ public class HubController implements Initializable{
                 !txtAddAuthor.getText().isEmpty() ||
                 !txtAddLikes.getText().isEmpty() ||
                 !txtAddShares.getText().isEmpty() ||
-                !datePicker.getValue().toString().isEmpty())
+                !datePicker.getValue().toString().isEmpty()) {
             try {
                 int postID = Integer.parseInt(txtAddPostID.getText());
                 String content = txtAddContent.getText();
@@ -509,10 +509,10 @@ public class HubController implements Initializable{
                 int likes = Integer.parseInt(txtAddLikes.getText());
                 int shares = Integer.parseInt(txtAddShares.getText());
                 String date_Time = lblPreviewDate.getText();
-                if (!hubModel.doesIdExist(postID)){
+                if (!hubModel.doesIdExist(postID)) {
                     //create new post
-                    Post post = new Post(postID,content,author,likes,shares,date_Time);
-                    if (hubModel.insertPost(post)){
+                    Post post = new Post(postID, content, author, likes, shares, date_Time);
+                    if (hubModel.insertPost(post)) {
                         //Confirmation message
                         JOptionPane.showMessageDialog(null,
                                 "Post successfully added to the database!",
@@ -525,7 +525,7 @@ public class HubController implements Initializable{
                                 "There was an issue adding new post to database!\n" +
                                         "Please try again!",
                                 "Post Error!", JOptionPane.WARNING_MESSAGE);
-                        }
+                    }
                 } else {
                     //warning message: ID already exists
                     JOptionPane.showMessageDialog(null,
@@ -533,13 +533,6 @@ public class HubController implements Initializable{
                                     "Please try again with a different ID!",
                             "Post Error!", JOptionPane.WARNING_MESSAGE);
                 }
-
-            } catch (Exception e) {
-                //warning message: empty input
-                JOptionPane.showMessageDialog(null,
-                        "Field cannot be empty!\n" +
-                                "Please try again!",
-                        "Input Empty!", JOptionPane.WARNING_MESSAGE);
             } finally {
                 //Clear input
                 txtAddPostID.clear();
@@ -552,6 +545,13 @@ public class HubController implements Initializable{
                 spinMinute.getValueFactory().setValue(0);
                 lblPreviewDate.setText("00/00/0000 00:00");
             }
+        } else {
+            //warning message: empty input
+            JOptionPane.showMessageDialog(null,
+                    "Field cannot be empty!\n" +
+                            "Please try again!",
+                    "Input Empty!", JOptionPane.WARNING_MESSAGE);
+        }
     }
     @FXML
     protected void onLnkVipPressed(ActionEvent event){
