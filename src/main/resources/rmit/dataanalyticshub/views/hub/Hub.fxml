@@ -6,6 +6,7 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory?>
 <?import javafx.scene.control.Tab?>
@@ -61,6 +62,12 @@
                   <Font name="Georgia Bold Italic" size="12.0" />
                </font>
             </Button>
+            <Separator prefWidth="105.0" />
+            <Button mnemonicParsing="false" onAction="#onBtnSignOutAction" prefHeight="40.0" prefWidth="140.0" stylesheets="@styleSheet.css" text="Sign-out" textFill="WHITE">
+               <font>
+                  <Font name="Georgia Bold Italic" size="12.0" />
+               </font>
+            </Button>
          </children>
       </VBox>
    </left>
@@ -93,6 +100,19 @@
                      <left>
                         <FlowPane fx:id="paneDetails" orientation="VERTICAL" prefHeight="200.0" prefWidth="485.0" rowValignment="TOP" BorderPane.alignment="CENTER">
                            <children>
+                              <Label text="Username:">
+                                 <font>
+                                    <Font name="Georgia Bold Italic" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lblUsername" text="Label">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                                 <FlowPane.margin>
+                                    <Insets bottom="5.0" />
+                                 </FlowPane.margin>
+                              </Label>
                               <Label text="First Name:">
                                  <font>
                                     <Font name="Georgia Bold Italic" size="14.0" />
@@ -119,19 +139,6 @@
                                     <Insets bottom="5.0" />
                                  </FlowPane.margin>
                               </Label>
-                              <Label text="User ID:">
-                                 <font>
-                                    <Font name="Georgia Bold Italic" size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="lblID" text="Label">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                                 <FlowPane.margin>
-                                    <Insets bottom="5.0" />
-                                 </FlowPane.margin>
-                              </Label>
                               <Label text="VIP Privileges:">
                                  <font>
                                     <Font name="Georgia Bold Italic" size="14.0" />
@@ -146,7 +153,58 @@
                         </FlowPane>
                      </left>
                   </BorderPane>
-                  <BorderPane fx:id="panePost" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <BorderPane fx:id="paneEditProfile" prefHeight="385.0" prefWidth="501.0" visible="false">
+                     <top>
+                        <Label prefHeight="75.0" prefWidth="500.0" text="Your Details" textFill="#52438f" BorderPane.alignment="CENTER">
+                           <font>
+                              <Font name="Georgia Bold Italic" size="24.0" />
+                           </font>
+                        </Label>
+                     </top>
+                     <padding>
+                        <Insets left="15.0" />
+                     </padding>
+                     <bottom>
+                        <Button fx:id="btnEditProfile1" mnemonicParsing="false" onAction="#onBtnEditProfileAction" prefHeight="40.0" prefWidth="140.0" stylesheets="@styleSheet.css" text="Edit Details" textFill="WHITE" BorderPane.alignment="CENTER_LEFT">
+                           <font>
+                              <Font name="Georgia Bold Italic" size="12.0" />
+                           </font>
+                           <BorderPane.margin>
+                              <Insets bottom="15.0" />
+                           </BorderPane.margin>
+                        </Button>
+                     </bottom>
+                     <left>
+                        <FlowPane orientation="VERTICAL" prefHeight="200.0" prefWidth="485.0" rowValignment="TOP" BorderPane.alignment="CENTER">
+                           <children>
+                              <Label text="Username:">
+                                 <font>
+                                    <Font name="Georgia Bold Italic" size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField />
+                              <Label text="First Name:">
+                                 <font>
+                                    <Font name="Georgia Bold Italic" size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField />
+                              <Label text="Last Name:">
+                                 <font>
+                                    <Font name="Georgia Bold Italic" size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField />
+                              <Label text="VIP Privileges:">
+                                 <font>
+                                    <Font name="Georgia Bold Italic" size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </FlowPane>
+                     </left>
+                  </BorderPane>
+                  <BorderPane fx:id="panePost" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <center>
                         <TabPane prefHeight="625.0" prefWidth="501.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
                           <tabs>

@@ -1,5 +1,8 @@
 package rmit.dataanalyticshub.hub;
 
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import rmit.dataanalyticshub.*;
 import javafx.event.*;
 import javafx.fxml.*;
@@ -45,14 +48,16 @@ public class HubController implements Initializable{
     @FXML
     private Label lblLName;
     @FXML
-    private Label lblID;
+    private Label lblUsername;
     @FXML
     private Label lblVIP;
     @FXML
     private Button btnEditProfile;
-    @FXML
-    private FlowPane paneDetails;
     //Profile
+    //Edit Profile
+    @FXML
+    private BorderPane paneEditProfile;
+    //Edit Profile
     //Post add
     @FXML
     private Pane panePost;
@@ -119,7 +124,7 @@ public class HubController implements Initializable{
         //puts stores user details into GUI
         lblFName.setText(user.getFirstname());
         lblLName.setText(user.getLastname());
-        lblID.setText(String.valueOf(user.getUsername()));
+        lblUsername.setText(String.valueOf(user.getUsername()));
         lblVIP.setText(String.valueOf(user.isVIP()));
         //welcome message
         lblWelcome.setText("Welcome Back, " +
@@ -304,6 +309,7 @@ public class HubController implements Initializable{
         } else if (event.getSource() == btnPost) {  //on Post click
             //show/hide panels
             paneProfile.setVisible(false);
+            paneEditProfile.setVisible(false);
             panePost.setVisible(true);
             //set button effect
             btnPost.setStyle("-fx-background-color: white;" +
@@ -311,6 +317,21 @@ public class HubController implements Initializable{
             btnProfile.setStyle("-fx-background-color: #6F5CC2;" +
                     "-fx-text-fill: white;");
         }
+    }
+    @FXML
+    protected void onBtnSignOutAction(ActionEvent event) throws IOException {
+        //Clear current user
+        currentUser = null;
+        //Open login form
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("views/login/Login.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        Stage stage = new Stage();
+        stage.getIcons().add(new Image("file:src/main/resources/rmit/dataanalyticshub/images/icon.png"));
+        stage.setTitle("Data Analytics Hub | Login");
+        stage.setScene(scene);
+        stage.show();
+        //close current form
+        ((Node)event.getSource()).getScene().getWindow().hide();
     }
     @FXML
     protected void onKeyPressed(KeyEvent event) {
@@ -457,5 +478,6 @@ public class HubController implements Initializable{
     @FXML
     protected void onBtnEditProfileAction(ActionEvent event) {
         //TODO allow user to edit profile details
+        paneEditProfile.setVisible(true);
     }
 }
